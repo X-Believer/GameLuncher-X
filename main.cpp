@@ -55,6 +55,12 @@ int main()
 			delete player;
 		}
 
+		//回到主菜单
+		else if (Choice == "MainMenu")
+		{
+			continue;
+		}
+
 		//退出系统
 		else if (Choice == "Exit")
 		{

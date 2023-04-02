@@ -15,17 +15,14 @@ public:
 	//构造函数
 	SystemManager();
 
-	//更新窗口
-	void UpdateWindow();
+	//设置窗口
+	string SettingMenu(string page);
 
 	//用户交互
-	int UserDO();
+	int UserDO(string page);
 	
 	//显示菜单
 	string ShowMenu(int page);
-
-	//选择游戏
-	void SelectGame();
 
 	//析构函数
 	~SystemManager();
