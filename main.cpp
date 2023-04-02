@@ -14,6 +14,11 @@ int main()
 	//创建游戏窗口
 	initgraph(WIN_WIDTH, WIN_HEIGHT);
 
+	//全屏显示
+	/*HWND hwnd = GetHWnd();
+	SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) - WS_CAPTION);
+	SetWindowPos(hwnd, HWND_TOP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CXSCREEN), SWP_SHOWWINDOW);*/
+
 	SystemManager sm;
 	while (1)
 	{
@@ -59,12 +64,6 @@ int main()
 		else if (Choice == "MainMenu")
 		{
 			continue;
-		}
-
-		//退出系统
-		else if (Choice == "Exit")
-		{
-			return 0;
 		}
 	}
 

@@ -17,9 +17,18 @@ namespace
 	IMAGE LeaderBoard; IMAGE LeaderBoard_glow; IMAGE LogOut; IMAGE LogOut_glow; IMAGE SettingMenuBg;
 	IMAGE SystemVersion; IMAGE GoBack_glow;
 
+	//主菜单控制量
 	int LBotton = 0; int RBotton = 0;
-	int MusicFlag = 1;
-	//0游戏机 >10城堡 >10小游戏1 >20小游戏2 >30小游戏3 >40小游戏4
+	int MusicFlag = 1; int SoundFlag = 1;
+	//0游戏机 10城堡 10小游戏1 20小游戏2 30小游戏3 40小游戏4
+
+	//设置菜单控制量
+	int Botton = 0;//调音量1 返回主菜单2 退出登录3 游戏音效4 背景音乐5 选择关卡6 切换账号7
+    //排行榜8 返回9 退出10
+	int Xvolume = 293;//音量圆圈所在位置
+
+	//账号系统控制量
+	int isLogin = 1;
 }
 
 //构造函数
@@ -28,7 +37,7 @@ SystemManager::SystemManager()
 
 }
 
-//设置窗口
+//设置菜单
 string SystemManager::SettingMenu(string page)
 {
 	//加载图片
@@ -39,17 +48,25 @@ string SystemManager::SettingMenu(string page)
 		loadimage(&AudioRound, "Graph/SettingMenu/AudioRound.png"); loadimage(&GoBack, "Graph/SettingMenu/GoBack.png");
 		loadimage(&BGM, "Graph/SettingMenu/BGM.png"); loadimage(&BGM_glow, "Graph/SettingMenu/BGM_glow.png");
 		loadimage(&ChangeAccount, "Graph/SettingMenu/ChangeAccount.png"); loadimage(&ChangeAccount_glow, "Graph/SettingMenu/ChangeAccount_glow.png");
-		loadimage(&ChooseLevel, "Graph/SettingMenu/ChooseLevel.png"); loadimage(&ChooseLevel_glow, "Graph/SettingMenu/ChooseLevel_glow.png");
 		loadimage(&GameSound, "Graph/SettingMenu/GameSound.png"); loadimage(&GameSound_glow, "Graph/SettingMenu/GameSound_glow.png");
 		loadimage(&GoMainMenu, "Graph/SettingMenu/GoMainMenu.png"); loadimage(&GoMainMenu_glow, "Graph/SettingMenu/GoMainMenu_glow.png");
 		loadimage(&LeaderBoard, "Graph/SettingMenu/LeaderBoard.png"); loadimage(&LeaderBoard_glow, "Graph/SettingMenu/LeaderBoard_glow.png");
 		loadimage(&LogOut, "Graph/SettingMenu/LogOut.png"); loadimage(&LogOut_glow, "Graph/SettingMenu/LogOut_glow.png");
 		loadimage(&SystemVersion, "Graph/SettingMenu/SystemVersion.png"); loadimage(&GoBack_glow, "Graph/SettingMenu/GoBack_glow.png");
+		if (page != "MainMenu")
+		{
+			loadimage(&ChooseLevel, "Graph/SettingMenu/ChooseLevel.png"); loadimage(&ChooseLevel_glow, "Graph/SettingMenu/ChooseLevel_glow.png");
+		}
+		else
+		{
+			loadimage(&ChooseLevel, "Graph/SettingMenu/SelectTheme.png"); loadimage(&ChooseLevel_glow, "Graph/SettingMenu/SelectTheme_glow.png");
+		}
 	}
 
 	while (1)
 	{
 		int status = UserDO("SettingMenu");
+
 		BeginBatchDraw();
 		putimagePNG(NULL, 0, 0, &SettingMenuBg); putimagePNG(NULL, 838, 495, &Exit);
 		putimagePNG(NULL, 177, 206, &AdjustVolume); putimagePNG(NULL, 398, 206, &BGM);
@@ -57,6 +74,121 @@ string SystemManager::SettingMenu(string page)
 		putimagePNG(NULL, 398, 141, &GameSound); putimagePNG(NULL, 19, 26, &GoBack);
 		putimagePNG(NULL, 177, 291, &GoMainMenu); putimagePNG(NULL, 398, 438, &LeaderBoard);
 		putimagePNG(NULL, 177, 378, &LogOut); putimagePNG(NULL, 8, 370, &SystemVersion);
+		putimagePNG(NULL, Xvolume, 216, &AudioRound);
+
+		//调节音量
+		if (Botton == 1)
+		{
+			putimagePNG(NULL, 177, 206, &AdjustVolume_glow);
+			MOUSEMSG audiomsg = GetMouseMsg();
+			if (audiomsg.x <= Xvolume + 13 &&
+				audiomsg.x >= 229 && audiomsg.x <= 293 &&
+				audiomsg.y >= 212 && audiomsg.y <= 232 && audiomsg.mkLButton == true)
+			{
+				Xvolume = audiomsg.x;
+			}
+		}
+
+		//返回主菜单
+		else if (Botton == 2)
+		{
+			putimagePNG(NULL, 177, 291, &GoMainMenu_glow);
+			if (status == 1)
+			{
+				EndBatchDraw();
+				return "MainMenu";
+			}
+		}
+
+		//退出登录
+		else if (Botton == 3)
+		{
+			putimagePNG(NULL, 177, 378, &LogOut_glow);
+			if (status == 1)
+			{
+				isLogin = 0;
+				EndBatchDraw();
+				return "LogOut";
+			}
+		}
+
+		//游戏音效
+		else if (Botton == 4)
+		{
+			putimagePNG(NULL, 398, 141, &GameSound_glow);
+			if (status == 1)
+			{
+				SoundFlag = SoundFlag == 1 ? 0 : 1;
+			}
+		}
+
+		//背景音乐
+		else if (Botton == 5)
+		{
+			putimagePNG(NULL, 398, 206, &BGM_glow);
+			if (status == 1)
+			{
+				MusicFlag = MusicFlag == 1 ? 0 : 1;
+				if(MusicFlag==0)
+					mciSendString("pause MainTheme", 0, 0, 0);
+				else if (MusicFlag == 1)
+					mciSendString("resume MainTheme", 0, 0, 0);
+			}
+		}
+
+		//选择关卡
+		else if (Botton == 6)
+		{
+			putimagePNG(NULL, 398, 292, &ChooseLevel_glow);
+			if (status == 1)
+			{
+				/*EndBatchDraw();
+				return "ChooseLevel";*/
+			}
+		}
+
+		//切换账号
+		else if (Botton == 7)
+		{
+			putimagePNG(NULL, 398, 378, &ChangeAccount_glow);
+			if (status == 1)
+			{
+				/*EndBatchDraw();
+				return "ChangeAccount";*/
+			}
+		}
+
+		//查看排行榜
+		else if (Botton == 8)
+		{
+			putimagePNG(NULL, 398, 438, &LeaderBoard_glow);
+			if (status == 1)
+			{
+				/*EndBatchDraw();
+				return "LeaderBoard";*/
+			}
+		}
+
+		//返回
+		else if (Botton == 9)
+		{
+			putimagePNG(NULL, 19, 26, &GoBack_glow);
+			if (status == 1)
+			{
+				EndBatchDraw();
+				return "GoBack";
+			}
+		}
+
+		//退出应用
+		else if (Botton == 10)
+		{
+			if (status == 1)
+			{
+				EndBatchDraw();
+				exit(0);
+			}
+		}
 
 		EndBatchDraw();
 	}
@@ -158,7 +290,119 @@ int SystemManager::UserDO(string page)
 	//设置菜单交互
 	else if (page == "SettingMenu")
 	{
-		return 0;
+		//调节音量
+		if (msg.x > 177 && msg.x < 327 && msg.y>206 && msg.y < 237)
+		{
+			Botton = 1;
+			return 0;
+		}
+
+		//返回主菜单
+		else if (msg.x > 177 && msg.x < 327 && msg.y>291 && msg.y < 323)
+		{
+			Botton = 2;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				return 1;
+		    }
+		}
+
+		//退出登录
+		else if (msg.x > 177 && msg.x < 327 && msg.y>378 && msg.y < 410)
+		{
+			Botton = 3;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				return 1;
+			}
+		}
+
+		//游戏音效
+		else if (msg.x > 398 && msg.x < 548 && msg.y>141 && msg.y < 173)
+		{
+			Botton = 4;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				return 1;
+			}
+		}
+
+		//背景音乐
+		else if (msg.x > 398 && msg.x < 548 && msg.y>206 && msg.y < 238)
+		{
+			Botton = 5;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				return 1;
+			}
+		}
+
+		//选择关卡
+		else if (msg.x > 398 && msg.x < 548 && msg.y>292 && msg.y < 324)
+		{
+			Botton = 6;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				return 1;
+			}
+		}
+
+		//切换账号
+		else if (msg.x > 398 && msg.x < 548 && msg.y>378 && msg.y < 410)
+		{
+			Botton = 7;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				return 1;
+			}
+		}
+
+		//排行榜
+		else if (msg.x > 398 && msg.x < 548 && msg.y>438 && msg.y < 470)
+		{
+			Botton = 8;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				return 1;
+			}
+		}
+
+		//返回
+		else if (msg.x > 19 && msg.x < 80 && msg.y>26 && msg.y < 65)
+		{
+			Botton = 9;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				return 1;
+			}
+		}
+
+		//退出应用
+		else if (msg.x > 837 && msg.x < 950 && msg.y>496 && msg.y < 523)
+		{
+			Botton = 10;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				return 1;
+			}
+		}
+
+		//无任何操作
+		else
+		{
+		    Botton = 0;
+			return 0;
+        }
+		
 	}
 
 	else
@@ -191,7 +435,8 @@ string SystemManager::ShowMenu(int page)
 	while (1)
 	{
 		int status = UserDO("MainMenu");
-		BeginBatchDraw();//开始缓冲
+
+		BeginBatchDraw();
 		putimagePNG(NULL, 0, 0, &mainBg); putimagePNG(NULL, 840, 500, &Exit);
 		putimagePNG(NULL, 540, 70, &fiveChess); putimagePNG(NULL, 760, 70, &mario);
 		putimagePNG(NULL, 760, 230, &russiaBlock); putimagePNG(NULL, 540, 230, &snake);
@@ -257,7 +502,7 @@ string SystemManager::ShowMenu(int page)
 		else if (RBotton == 50 && status == 1)
 		{
 			EndBatchDraw();
-			return "Exit";
+			exit(0);
 		}
 
 		//游戏设置
@@ -267,20 +512,18 @@ string SystemManager::ShowMenu(int page)
 			if (status == 1)
 			{
 				string settingchoice = SettingMenu("MainMenu");
-				if (settingchoice == "Break")
+
+				//设置中选择返回主菜单
+				if (settingchoice == "MainMenu"|| settingchoice == "LogOut")
 				{
 					EndBatchDraw();
-					return 
+					return "MainMenu";
 				}
-				/*MusicFlag = MusicFlag == 1 ? 0 : 1;
-				if(MusicFlag==0)
-				    mciSendString("pause MainTheme", 0, 0, 0);
-				else if (MusicFlag == 1)
-					mciSendString("resume MainTheme", 0, 0, 0);*/
+
 			}
 		}
 
-		EndBatchDraw();//结束缓冲
+		EndBatchDraw();
 	}
 }
 

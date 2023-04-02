@@ -5,6 +5,7 @@
 #include<string>
 #include<mmsystem.h>
 #include<Windows.h>
+#include<conio.h>
 #pragma comment(lib,"winmm.lib")
 using namespace std;
 
@@ -15,7 +16,7 @@ public:
 	//构造函数
 	SystemManager();
 
-	//设置窗口
+	//设置菜单
 	string SettingMenu(string page);
 
 	//用户交互
