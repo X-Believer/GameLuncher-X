@@ -2,7 +2,7 @@
 #include<string>
 #include"SystemManager.h"
 #include"Games.h"
-#include"五子棋.h"
+#include"FiveChess.h"
 using namespace std;
 
 #define WIN_WIDTH  960//菜单窗口大小

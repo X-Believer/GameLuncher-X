@@ -129,18 +129,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cJSON.c" />
     <ClCompile Include="FiveChessAi.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SuperMario.cpp" />
     <ClCompile Include="SystemManager.cpp" />
+    <ClCompile Include="tools.cpp" />
     <ClCompile Include="Transparent.cpp" />
-    <ClCompile Include="五子棋.cpp" />
+    <ClCompile Include="FiveChess.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cJSON.h" />
     <ClInclude Include="FiveChessAi.h" />
     <ClInclude Include="Games.h" />
+    <ClInclude Include="SuperMario.h" />
     <ClInclude Include="SystemManager.h" />
+    <ClInclude Include="tools.h" />
     <ClInclude Include="Transparent.h" />
-    <ClInclude Include="五子棋.h" />
+    <ClInclude Include="FiveChess.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

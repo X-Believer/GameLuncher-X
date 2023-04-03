@@ -1,0 +1,79 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Map1.tmj",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "全部文件 (*)",
+    "fileStates": {
+        "C:/Users/X-BELIEVER/Documents/信息奥赛/源程序/VS/游戏启动器X/Graph/SuperMario/Map.tmx": {
+            "scale": 0.06523333333333334,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3004.5988758303524,
+                "y": 283.5973428717425
+            }
+        },
+        "Map.tmx": {
+            "scale": 0.06523333333333334,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3004.5988758303524,
+                "y": 268.2677567705673
+            }
+        },
+        "Map1.tmj": {
+            "scale": 0.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 4227,
+                "y": 274
+            }
+        },
+        "Map1.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 4228,
+                "y": 273
+            }
+        },
+        "MapSet.tsj": {
+            "scaleInDock": 0.33,
+            "scaleInEditor": 1
+        },
+        "MapSet.tsx": {
+            "scaleInDock": 0.33,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/Users/X-BELIEVER/Documents/信息奥赛/源程序/VS/游戏启动器X/Graph/SuperMario/TileProject",
+    "map.height": 13,
+    "map.lastUsedFormat": "json",
+    "map.renderOrder": null,
+    "map.tileHeight": 42,
+    "map.tileWidth": 42,
+    "map.width": 200,
+    "openFiles": [
+        "MapSet.tsj",
+        "Map1.tmj"
+    ],
+    "project": "MarioMap.tiled-project",
+    "recentFiles": [
+        "MapSet.tsj",
+        "Map1.tmj",
+        "MapSet.tsx",
+        "Map1.tmx",
+        "Map.tmx",
+        "C:/Users/X-BELIEVER/Documents/信息奥赛/源程序/VS/游戏启动器X/Graph/SuperMario/Map.tmx"
+    ],
+    "tileset.lastUsedFormat": "json",
+    "tileset.margin": 4,
+    "tileset.tileSize": {
+        "height": 42,
+        "width": 42
+    }
+}

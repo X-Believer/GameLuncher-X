@@ -32,4 +32,7 @@ public:
 	//运行游戏
 	virtual void RunGame();
 
+	//析构函数
+	~FiveChess();
+
 };

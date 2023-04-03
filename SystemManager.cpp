@@ -1,7 +1,7 @@
 #include "SystemManager.h"
 #include "Transparent.h"
 #include "Games.h"
-#include "Îå×ÓÆå.h"
+#include "FiveChess.h"
 namespace
 {
 	//Ö÷²Ëµ¥Í¼Æ¬
@@ -429,8 +429,11 @@ string SystemManager::ShowMenu(int page)
 	}
 
 	//²¥·Å±³¾°ÒôÀÖ
-	mciSendString("open Audio/MainMenu/Theme.mp3 alias MainTheme", 0, 0, 0);
-	mciSendString("play MainTheme repeat", 0, 0, 0);
+	if (MusicFlag == 1)
+	{
+		mciSendString("open Audio/MainMenu/Theme.mp3 alias MainTheme", 0, 0, 0);
+		mciSendString("play MainTheme repeat", 0, 0, 0);
+	}
 
 	while (1)
 	{

@@ -1,0 +1,14 @@
+{ "columns":24,
+ "image":"tileset.png",
+ "imageheight":1024,
+ "imagewidth":1024,
+ "margin":4,
+ "name":"MapSet",
+ "spacing":0,
+ "tilecount":576,
+ "tiledversion":"1.9.2",
+ "tileheight":42,
+ "tilewidth":42,
+ "type":"tileset",
+ "version":"1.9"
+}

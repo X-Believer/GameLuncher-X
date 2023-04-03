@@ -1,4 +1,4 @@
-#include"五子棋.h"
+#include"FiveChess.h"
 #include"Transparent.h"
 #include<cmath>
 #include<string>
@@ -390,4 +390,10 @@ void FiveChess::RunGame()
 		EndBatchDraw();
 	}
 	return;
+}
+
+//析构函数
+FiveChess::~FiveChess()
+{
+
 }

@@ -19,6 +19,18 @@
     <Filter Include="头文件\五子棋">
       <UniqueIdentifier>{935db85f-56d8-4895-808a-5b6a8b9a2984}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\SuperMario">
+      <UniqueIdentifier>{7bfad86f-91dd-4beb-8f77-fd3fa993d471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\SuperMario">
+      <UniqueIdentifier>{cdad20fd-ede1-49ae-adf7-d7c03de3826f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Tool">
+      <UniqueIdentifier>{757ab144-4587-430a-b613-d9169cd633f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Tool">
+      <UniqueIdentifier>{8de224fa-c379-49f7-bd69-01ea2f7799bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,14 +39,23 @@
     <ClCompile Include="SystemManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="五子棋.cpp">
+    <ClCompile Include="FiveChess.cpp">
       <Filter>源文件\五子棋</Filter>
-    </ClCompile>
-    <ClCompile Include="Transparent.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FiveChessAi.cpp">
       <Filter>源文件\五子棋</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperMario.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
+    <ClCompile Include="tools.cpp">
+      <Filter>源文件\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Transparent.cpp">
+      <Filter>源文件\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="cJSON.c">
+      <Filter>源文件\Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,14 +65,23 @@
     <ClInclude Include="SystemManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="五子棋.h">
+    <ClInclude Include="FiveChess.h">
       <Filter>头文件\五子棋</Filter>
-    </ClInclude>
-    <ClInclude Include="Transparent.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FiveChessAi.h">
       <Filter>头文件\五子棋</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperMario.h">
+      <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="tools.h">
+      <Filter>头文件\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Transparent.h">
+      <Filter>头文件\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="cJSON.h">
+      <Filter>头文件\Tool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
