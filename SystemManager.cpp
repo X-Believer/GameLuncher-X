@@ -19,17 +19,17 @@ namespace
 
 	//主菜单控制量
 	int LBotton = 0; int RBotton = 0;
-	int MusicFlag = 1; int SoundFlag = 1;
 	//0游戏机 10城堡 10小游戏1 20小游戏2 30小游戏3 40小游戏4
 
 	//设置菜单控制量
 	int Botton = 0;//调音量1 返回主菜单2 退出登录3 游戏音效4 背景音乐5 选择关卡6 切换账号7
     //排行榜8 返回9 退出10
 	int Xvolume = 293;//音量圆圈所在位置
-
-	//账号系统控制量
-	int isLogin = 1;
 }
+
+int MusicFlag = 1;//是否播放音乐
+int SoundFlag = 1;//是否打开游戏音效
+int IsLogin = 0;//是否登录
 
 //构造函数
 SystemManager::SystemManager()
@@ -106,7 +106,7 @@ string SystemManager::SettingMenu(string page)
 			putimagePNG(NULL, 177, 378, &LogOut_glow);
 			if (status == 1)
 			{
-				isLogin = 0;
+				IsLogin = 0;
 				EndBatchDraw();
 				return "LogOut";
 			}
@@ -209,7 +209,10 @@ int SystemManager::UserDO(string page)
 			if (msg.message == WM_LBUTTONDOWN)
 			{
 				LBotton = (LBotton == 0) ? 10 : 0;
-				mciSendString("play Audio/MainMenu/Botton1.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton1.mp3", 0, 0, 0);
+				}			
 				return 1;//有点击
 			}
 		}
@@ -220,7 +223,10 @@ int SystemManager::UserDO(string page)
 			RBotton = 10;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}			
 				return 1;//有点击
 			}
 		}
@@ -231,7 +237,10 @@ int SystemManager::UserDO(string page)
 			RBotton = 20;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;//有点击
 			}
 		}
@@ -242,7 +251,10 @@ int SystemManager::UserDO(string page)
 			RBotton = 30;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;//有点击
 			}
 		}
@@ -253,7 +265,10 @@ int SystemManager::UserDO(string page)
 			RBotton = 40;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;//有点击
 			}
 		}
@@ -264,7 +279,10 @@ int SystemManager::UserDO(string page)
 			RBotton = 50;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;//有点击
 			}
 		}
@@ -275,7 +293,10 @@ int SystemManager::UserDO(string page)
 			RBotton = 60;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;//有点击
 			}
 		}
@@ -303,7 +324,10 @@ int SystemManager::UserDO(string page)
 			Botton = 2;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;
 		    }
 		}
@@ -314,7 +338,10 @@ int SystemManager::UserDO(string page)
 			Botton = 3;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;
 			}
 		}
@@ -325,7 +352,10 @@ int SystemManager::UserDO(string page)
 			Botton = 4;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;
 			}
 		}
@@ -336,7 +366,10 @@ int SystemManager::UserDO(string page)
 			Botton = 5;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;
 			}
 		}
@@ -347,7 +380,10 @@ int SystemManager::UserDO(string page)
 			Botton = 6;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;
 			}
 		}
@@ -358,7 +394,10 @@ int SystemManager::UserDO(string page)
 			Botton = 7;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;
 			}
 		}
@@ -369,7 +408,10 @@ int SystemManager::UserDO(string page)
 			Botton = 8;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;
 			}
 		}
@@ -380,7 +422,10 @@ int SystemManager::UserDO(string page)
 			Botton = 9;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;
 			}
 		}
@@ -391,7 +436,10 @@ int SystemManager::UserDO(string page)
 			Botton = 10;
 			if (msg.message == WM_LBUTTONDOWN)
 			{
-				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
 				return 1;
 			}
 		}

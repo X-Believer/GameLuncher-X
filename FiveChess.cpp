@@ -70,7 +70,10 @@ int FiveChess::UserDo()
 	{
 		if (isAi == 0 || isAi == 1 && Turn == 0)
 		{
-			mciSendString("play Audio/FiveChess/ChessDown.mp3", 0, 0, 0);
+			if (SoundFlag == 1)
+			{
+				mciSendString("play Audio/FiveChess/ChessDown.mp3", 0, 0, 0);
+			}
 			drawchess(msg.x, msg.y);
 		}
 		return 0;
@@ -82,7 +85,10 @@ int FiveChess::UserDo()
 		RBotton = 1;
 		if (flag != 1 && msg.message == WM_LBUTTONDOWN)
 		{
-			mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			if (SoundFlag == 1)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			}	
 			return 1;
 		}
 		return 0;
@@ -94,7 +100,10 @@ int FiveChess::UserDo()
 		RBotton = 2;
 		if (msg.message == WM_LBUTTONDOWN)
 		{
-			mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			if (SoundFlag == 1)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			}
 			return 1;
 		}
 		return 0;
@@ -106,7 +115,10 @@ int FiveChess::UserDo()
 		RBotton = 3;
 		if (msg.message == WM_LBUTTONDOWN)
 		{
-			mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			if (SoundFlag == 1)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			}
 			return 1;
 		}
 		return 0;
@@ -118,7 +130,10 @@ int FiveChess::UserDo()
 		RBotton = 4;
 		if (msg.message == WM_LBUTTONDOWN)
 		{
-			mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			if (SoundFlag == 1)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			}
 			return 1;
 		}
 		return 0;
@@ -130,7 +145,10 @@ int FiveChess::UserDo()
 		RBotton = 5;
 		if (msg.message == WM_LBUTTONDOWN)
 		{
-			mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			if (SoundFlag == 1)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			}
 			return 1;
 		}
 		return 0;
@@ -190,7 +208,7 @@ bool FiveChess::checkwin(int x, int y)
 	return false;
 }
 
-//显示设置
+//显示游戏菜单
 void FiveChess::ShowGameMenu()
 {
 
@@ -237,13 +255,19 @@ void FiveChess::RunGame()
 		{
 			if (checkwin(xNow, yNow))
 			{
-				mciSendString("play Audio/FiveChess/Win.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/FiveChess/Win.mp3", 0, 0, 0);
+				}
 				flag = 1;
 			}	
 
 			if (isAi == 1 && checkwin(xAi, yAi))
 			{
-				mciSendString("play Audio/FiveChess/Win.mp3", 0, 0, 0);
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/FiveChess/Win.mp3", 0, 0, 0);
+				}
 				flag = 1;
 			}
 		}
@@ -328,6 +352,8 @@ void FiveChess::RunGame()
 				if (settingchoice == "MainMenu")
 				{
 					EndBatchDraw();
+					delete sm;
+					delete Ai;
 					return;
 				}
 
@@ -335,6 +361,8 @@ void FiveChess::RunGame()
 				else if (settingchoice == "LogOut")
 				{
 					EndBatchDraw();
+					delete sm;
+					delete Ai;
 					return;
 				}
 

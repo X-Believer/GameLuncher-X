@@ -9,6 +9,10 @@
 #pragma comment(lib,"winmm.lib")
 using namespace std;
 
+extern int MusicFlag;
+extern int SoundFlag;
+extern int IsLogin;
+
 class SystemManager
 {
 public:
@@ -27,5 +31,6 @@ public:
 
 	//Îö¹¹º¯Êý
 	~SystemManager();
+
 };
 
