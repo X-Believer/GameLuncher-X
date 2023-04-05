@@ -6,6 +6,7 @@
 #include<mmsystem.h>
 #include<Windows.h>
 #include<conio.h>
+#include"Identity.h"
 #pragma comment(lib,"winmm.lib")
 using namespace std;
 
@@ -13,12 +14,12 @@ extern int MusicFlag;
 extern int SoundFlag;
 extern int IsLogin;
 
-class SystemManager
+class SystemManager:public Identity
 {
 public:
 
 	//构造函数
-	SystemManager();
+	SystemManager(string name,string pwd);
 
 	//设置菜单
 	string SettingMenu(string page);
@@ -26,8 +27,20 @@ public:
 	//用户交互
 	int UserDO(string page);
 	
-	//显示菜单
+	//显示主菜单
 	string ShowMenu(int page);
+
+	//账户菜单
+	string AccountMenu(string page);
+
+	//显示信息(系统信息)
+	virtual void ShowInfo();
+
+	//添加账号
+	void AddAccount();
+
+	//删除账号
+	void DeleteAccount();
 
 	//析构函数
 	~SystemManager();

@@ -345,7 +345,7 @@ void FiveChess::RunGame()
 			putimagePNG(NULL, 696, 361, &GameSettings_glow);
 			if (status == 1)
 			{
-				SystemManager* sm=new SystemManager;
+				SystemManager* sm=new SystemManager("Admin","123Cptbtptp");
 				string settingchoice = sm->SettingMenu("FiveChess");
 
 				//设置中选择返回主菜单

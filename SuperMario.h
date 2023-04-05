@@ -19,6 +19,7 @@ namespace
 		int *tiles;
 		int width;
 		int height;
+		int type;
 	};
 
 	//µØÍ¼

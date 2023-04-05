@@ -19,7 +19,7 @@ int main()
 	SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) - WS_CAPTION);
 	SetWindowPos(hwnd, HWND_TOP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CXSCREEN), SWP_SHOWWINDOW);*/
 
-	SystemManager sm;
+	SystemManager sm("Admin","123Cptbtptp");
 	while (1)
 	{
 		Choice = sm.ShowMenu(1);

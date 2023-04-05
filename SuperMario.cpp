@@ -51,15 +51,24 @@ bool SuperMario::MapInit()
 		cJSON *layer=cJSON_GetArrayItem(layer_node, i);
 
 		strcpy(gameMap.layers[i].name, cJSON_GetObjectItem(layer, "name")->valuestring);
+		const char* type = cJSON_GetObjectItem(layer, "type")->valuestring;
 
-		cJSON* data_node = cJSON_GetObjectItem(layer, "data");
-		int count= cJSON_GetArraySize(data_node);
-
-		gameMap.layers[i].tiles = (int*)malloc(sizeof(int) * count);
-		for (int k = 0; k < count; k++)
+		//½âÎöÍ¼¿é²ã
+		if (strcmp(type, "tilelayer") == 0)
 		{
-			gameMap.layers[i].tiles[k] = cJSON_GetArrayItem(data_node, k)->valueint;
+			gameMap.layers[i].type = 0;
+			cJSON* data_node = cJSON_GetObjectItem(layer, "data");
+			gameMap.layers[i].height = cJSON_GetObjectItem(layer, "height")->valueint;
+			gameMap.layers[i].width = cJSON_GetObjectItem(layer, "width")->valueint;
+			int count = cJSON_GetArraySize(data_node);
+
+			gameMap.layers[i].tiles = (int*)malloc(sizeof(int) * count);
+			for (int k = 0; k < count; k++)
+			{
+				gameMap.layers[i].tiles[k] = cJSON_GetArrayItem(data_node, k)->valueint;
+			}
 		}
+
 
 	}
 

@@ -6,8 +6,8 @@ namespace
 {
 	//主菜单图片
 	IMAGE mainBg; IMAGE gamePlayer; IMAGE castle; IMAGE Setting; IMAGE Setting_glow;
-	IMAGE Select; IMAGE warning; IMAGE russiaBlock;
-	IMAGE fiveChess; IMAGE mario; IMAGE snake; IMAGE Exit;
+	IMAGE Select; IMAGE warning; IMAGE russiaBlock; IMAGE Account; IMAGE Login;
+	IMAGE fiveChess; IMAGE mario; IMAGE snake; IMAGE Exit; IMAGE NotLogin;
 	IMAGE russiaBlock_Glow; IMAGE fiveChess_Glow; IMAGE mario_Glow; IMAGE snake_Glow;
 
 	//设置菜单图片
@@ -16,6 +16,12 @@ namespace
 	IMAGE GameSound; IMAGE GameSound_glow; IMAGE GoBack; IMAGE GoMainMenu; IMAGE GoMainMenu_glow;
 	IMAGE LeaderBoard; IMAGE LeaderBoard_glow; IMAGE LogOut; IMAGE LogOut_glow; IMAGE SettingMenuBg;
 	IMAGE SystemVersion; IMAGE GoBack_glow;
+
+	//账户菜单图片
+	IMAGE Accountmenu; IMAGE Account1; IMAGE Achievement; IMAGE Achievement_glow; IMAGE Avatar;
+	IMAGE CancelAccount; IMAGE CancelAccount_glow; IMAGE CreateAccount; IMAGE CreateAccount_glow;
+	IMAGE Login1; IMAGE Login_glow; IMAGE Logout; IMAGE Logout_glow; IMAGE Manager; IMAGE Password;
+	IMAGE Problem; IMAGE Problem_glow; IMAGE UserName; IMAGE UserName_glow; IMAGE Window;
 
 	//主菜单控制量
 	int LBotton = 0; int RBotton = 0;
@@ -32,7 +38,7 @@ int SoundFlag = 1;//是否打开游戏音效
 int IsLogin = 0;//是否登录
 
 //构造函数
-SystemManager::SystemManager()
+SystemManager::SystemManager(string name,string pwd)
 {
 
 }
@@ -301,6 +307,20 @@ int SystemManager::UserDO(string page)
 			}
 		}
 
+		//账户管理
+		else if (msg.x > 70 && msg.x < 154 && msg.y>493 && msg.y < 520)
+		{
+			RBotton = 70;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;//有点击
+			}
+		}
+
 		else
 		{
 			RBotton = 0;
@@ -449,10 +469,16 @@ int SystemManager::UserDO(string page)
 		{
 		    Botton = 0;
 			return 0;
-        }
-		
+        }	
 	}
 
+	//账户菜单交互
+	else if (page == "AccountMenu")
+	{
+	    
+	}
+	
+    //无操作
 	else
 	{
 		return 0;
@@ -462,7 +488,6 @@ int SystemManager::UserDO(string page)
 //显示主菜单
 string SystemManager::ShowMenu(int page)
 {
-
 	//加载背景图片
 	if (page == 1)
 	{
@@ -474,6 +499,8 @@ string SystemManager::ShowMenu(int page)
 		loadimage(&fiveChess_Glow, "Graph/MainMenu/FiveChess_glow.png"); loadimage(&mario_Glow, "Graph/MainMenu/Mario_glow.png");
 		loadimage(&snake_Glow, "Graph/MainMenu/Snake_glow.png"); loadimage(&Exit, "Graph/MainMenu/Exit.png");
 		loadimage(&Setting, "Graph/MainMenu/Setting.png"); loadimage(&Setting_glow, "Graph/MainMenu/Setting_glow.png");
+		loadimage(&Account, "Graph/MainMenu/Account.png"); loadimage(&Login, "Graph/MainMenu/Login.png");
+		loadimage(&NotLogin, "Graph/MainMenu/NotLogin.png");
 	}
 
 	//播放背景音乐
@@ -488,10 +515,17 @@ string SystemManager::ShowMenu(int page)
 		int status = UserDO("MainMenu");
 
 		BeginBatchDraw();
+	
 		putimagePNG(NULL, 0, 0, &mainBg); putimagePNG(NULL, 840, 500, &Exit);
 		putimagePNG(NULL, 540, 70, &fiveChess); putimagePNG(NULL, 760, 70, &mario);
 		putimagePNG(NULL, 760, 230, &russiaBlock); putimagePNG(NULL, 540, 230, &snake);
-		putimagePNG(NULL, 20, 480, &Setting);
+		putimagePNG(NULL, 20, 480, &Setting); 
+		if(RBotton==70)putimagePNG(NULL, 70, 493, &Account);
+		else
+		{
+			if (IsLogin == 1)putimagePNG(NULL, 70, 493, &Login);
+			else putimagePNG(NULL, 70, 493, &NotLogin);
+		}
 
 		//打印游戏机
 		if (LBotton == 0)
@@ -574,8 +608,75 @@ string SystemManager::ShowMenu(int page)
 			}
 		}
 
+		//账户管理
+		else if (RBotton == 70)
+		{
+			if (status == 1)
+			{
+				string accountchoice = AccountMenu("MainMenu");
+
+				//设置中选择返回主菜单
+				if (accountchoice == "MainMenu" || accountchoice == "LogOut")
+				{
+					EndBatchDraw();
+					return "MainMenu";
+				}
+			}
+		}
+
 		EndBatchDraw();
 	}
+}
+
+//账户菜单
+string SystemManager::AccountMenu(string page)
+{
+	//加载图片
+	if (1)
+	{
+		loadimage(&Accountmenu, "Graph/AccountMenu/AccountMenu.png"); loadimage(&Account1, "Graph/AccountMenu/Account.png");
+		loadimage(&Achievement, "Graph/AccountMenu/Achievement.png"); loadimage(&Achievement_glow, "Graph/AccountMenu/Achievement_glow.png");
+		loadimage(&Avatar, "Graph/AccountMenu/Avatar.png"); loadimage(&CancelAccount, "Graph/AccountMenu/CancelAccount.png");
+		loadimage(&CancelAccount_glow, "Graph/AccountMenu/CancelAccount_glow.png"); loadimage(&CreateAccount, "Graph/AccountMenu/CreateAccount.png");
+		loadimage(&CreateAccount_glow, "Graph/AccountMenu/CreateAccount_glow.png"); loadimage(&Login1, "Graph/AccountMenu/Login.png");
+		loadimage(&Login_glow, "Graph/AccountMenu/Login_glow.png"); loadimage(&Logout, "Graph/AccountMenu/Logout.png");
+		loadimage(&Logout_glow, "Graph/AccountMenu/Logout_glow.png"); loadimage(&Logout, "Graph/AccountMenu/Logout.png");
+		loadimage(&Manager, "Graph/AccountMenu/Manager.png"); loadimage(&Password, "Graph/AccountMenu/Password.png");
+		loadimage(&Problem, "Graph/AccountMenu/Problem.png"); loadimage(&Problem_glow, "Graph/AccountMenu/Problem_glow.png");
+		loadimage(&UserName, "Graph/AccountMenu/UserName.png"); loadimage(&UserName_glow, "Graph/AccountMenu/UserName_glow.png");
+		loadimage(&Window, "Graph/AccountMenu/Window.png"); loadimage(&GoBack, "Graph/SettingMenu/GoBack.png"); loadimage(&GoBack_glow, "Graph/SettingMenu/GoBack_glow.png");
+	}
+
+	while (1)
+	{
+		int status = UserDO("AccountMenu");
+
+		BeginBatchDraw();
+
+		putimagePNG(NULL, 0, 0, &Accountmenu); putimagePNG(NULL, 102, 16, &Window); putimagePNG(NULL, 19, 26, &GoBack);
+
+		EndBatchDraw();
+	}
+	
+	return "MainMenu";
+}
+
+//显示信息(系统信息)
+void SystemManager::ShowInfo()
+{
+
+}
+
+//添加账号
+void SystemManager::AddAccount()
+{
+
+}
+
+//删除账号
+void SystemManager::DeleteAccount()
+{
+
 }
 
 //析构函数
