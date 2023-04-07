@@ -23,6 +23,10 @@ namespace
 	IMAGE Login1; IMAGE Login_glow; IMAGE Logout; IMAGE Logout_glow; IMAGE Manager; IMAGE Password;
 	IMAGE Problem; IMAGE Problem_glow; IMAGE UserName; IMAGE UserName_glow; IMAGE Window;
 
+	//信息窗口图片
+	IMAGE No_glow;IMAGE No; IMAGE Yes; IMAGE Success; IMAGE Sure; 
+	IMAGE Wrong; IMAGE Yes_glow; IMAGE Word;
+
 	//主菜单控制量
 	int LBotton = 0; int RBotton = 0;
 	//0游戏机 10城堡 10小游戏1 20小游戏2 30小游戏3 40小游戏4
@@ -34,11 +38,20 @@ namespace
 
 	//账号菜单控制量
 	int BottonAccount = 0;
+
+	//信息窗口控制量
+	int BottonWindow = 0;
 }
 
 int MusicFlag = 1;//是否播放音乐
 int SoundFlag = 1;//是否打开游戏音效
 int IsLogin = 1;//是否登录
+
+//默认构造
+SystemManager::SystemManager()
+{
+
+}
 
 //构造函数
 SystemManager::SystemManager(string name,string pwd)
@@ -69,7 +82,7 @@ string SystemManager::SettingMenu(string page)
 		else
 		{
 			loadimage(&ChooseLevel, "Graph/SettingMenu/SelectTheme.png"); loadimage(&ChooseLevel_glow, "Graph/SettingMenu/SelectTheme_glow.png");
-		}
+		}	
 	}
 
 	while (1)
@@ -104,6 +117,18 @@ string SystemManager::SettingMenu(string page)
 			putimagePNG(NULL, 177, 291, &GoMainMenu_glow);
 			if (status == 1)
 			{
+				if (page != "MainMenu")
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+					}					
+					int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGLoss.png");
+					if (windowChoice != 2)
+					{
+						continue;
+					}
+				}
 				EndBatchDraw();
 				return "MainMenu";
 			}
@@ -115,6 +140,26 @@ string SystemManager::SettingMenu(string page)
 			putimagePNG(NULL, 177, 378, &LogOut_glow);
 			if (status == 1)
 			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+				}
+				if (page == "MainMenu")
+				{
+					int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGIsLogout.png");
+					if (windowChoice != 2)
+					{
+						continue;
+					}
+				}
+				else if (page != "MainMenu")
+				{
+					int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGLoss.png");
+					if (windowChoice != 2)
+					{
+						continue;
+					}
+				}
 				IsLogin = 0;
 				EndBatchDraw();
 				return "LogOut";
@@ -194,6 +239,15 @@ string SystemManager::SettingMenu(string page)
 		{
 			if (status == 1)
 			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+				}
+				int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGExit.png");
+				if (windowChoice != 2)
+				{
+					continue;
+				}
 				EndBatchDraw();
 				exit(0);
 			}
@@ -640,6 +694,45 @@ int SystemManager::UserDO(string page)
 			}
 		}
 	}
+
+	//信息窗口交互
+	else if (page == "MSGWindow")
+	{
+	    //左侧按钮
+		if (msg.x > 357 && msg.x < 436 && msg.y>325 && msg.y < 352)
+		{
+			BottonWindow = 1;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//右侧按钮
+		else if (msg.x > 498 && msg.x < 575 && msg.y>325 && msg.y < 352)
+		{
+			BottonWindow = 2;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//无操作
+		else
+		{
+			BottonWindow = 0;
+			return 0;
+		}
+    }
 	
     //无操作
 	else
@@ -648,7 +741,7 @@ int SystemManager::UserDO(string page)
 	}
 }
 
-//显示主菜单
+//主菜单
 string SystemManager::ShowMenu(int page)
 {
 	//加载背景图片
@@ -749,6 +842,15 @@ string SystemManager::ShowMenu(int page)
 		//退出应用
 		else if (RBotton == 50 && status == 1)
 		{
+			if (SoundFlag == 1)
+			{
+				mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+			}
+			int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGExit.png");
+			if (windowChoice != 2)
+			{
+				continue;
+			}
 			EndBatchDraw();
 			exit(0);
 		}
@@ -929,7 +1031,92 @@ string SystemManager::AccountMenu(string page)
 
 		EndBatchDraw();
 	}
-	
+}
+
+//信息窗口
+int SystemManager::MSGWindow(string page,const char* word)
+{
+	loadimage(&No, "Graph/MSGWindow/No.png"); loadimage(&Success, "Graph/MSGWindow/Success.png"); loadimage(&Sure, "Graph/MSGWindow/Sure.png"); loadimage(&No_glow, "Graph/MSGWindow/No_glow.png");
+	loadimage(&Word, "Graph/MSGWindow/MSGLoss.png");loadimage(&Wrong, "Graph/MSGWindow/Wrong.png"); loadimage(&Yes, "Graph/MSGWindow/Yes.png"); loadimage(&Yes_glow, "Graph/MSGWindow/Yes_glow.png"); loadimage(&Word, word);
+
+	//操作成功/失败窗口
+	if (page == "Success" || page == "Wrong")
+	{
+		if (page == "Success")
+		{
+			putimagePNG(NULL, 276, 144, &Success);
+		}
+
+		else if (page == "Wrong")
+		{
+			putimagePNG(NULL, 276, 144, &Wrong);
+		}
+		putimagePNG(NULL, 389, 239, &Word);
+
+		while (1)
+		{
+			int status = UserDO("MSGWindow");
+
+			BeginBatchDraw();
+			
+
+			putimagePNG(NULL, 357, 324, &Yes);
+			
+			//点击确认
+			if (BottonWindow == 1)
+			{
+				putimagePNG(NULL, 357, 324, &Yes_glow);
+				if (status == 1)
+				{
+					EndBatchDraw();
+					return 1;
+				}
+			}
+
+			EndBatchDraw();
+		}
+	}
+
+	//操作确认窗口
+	else if (page == "Sure")
+	{
+		putimagePNG(NULL, 276, 144, &Sure);
+		putimagePNG(NULL, 389, 239, &Word);
+		while (1)
+		{
+			int status = UserDO("MSGWindow");
+
+			BeginBatchDraw();
+			putimagePNG(NULL, 357, 324, &No);
+			putimagePNG(NULL, 498, 324, &Yes);
+
+			//点击取消
+			if (BottonWindow == 1)
+			{
+				putimagePNG(NULL, 357, 324, &No_glow);
+				if (status == 1)
+				{
+					EndBatchDraw();
+					return 1;
+				}
+			}
+
+			//点击确认
+			if (BottonWindow == 2)
+			{
+				putimagePNG(NULL, 498, 324, &Yes_glow);
+				if (status == 1)
+				{
+					EndBatchDraw();
+					return 2;
+				}
+			}
+
+			EndBatchDraw();
+		}
+	}
+
+	else return 0;
 }
 
 //显示信息(系统信息)

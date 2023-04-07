@@ -382,6 +382,16 @@ void FiveChess::RunGame()
 			putimagePNG(NULL, 696, 439, &GoMainMenu_glow);
 			if (status == 1)
 			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+				}
+				SystemManager sm;
+				int windowChoice = sm.MSGWindow("Sure", "Graph/MSGWindow/MSGLoss.png");
+				if (windowChoice != 2)
+				{
+					continue;
+				}
 				memset(board, 0, sizeof(board));
 				Turn = 0;
 				flag = 0;

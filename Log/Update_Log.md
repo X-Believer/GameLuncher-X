@@ -92,6 +92,24 @@ By X-Believer
 
 ------
 
+#### 2023-04-03
+
+1.实现"SystemManager"中函数"MSGWindow"信息窗口功能
+
+2.将"MSGWindow"接入一些函数操作，实现提示窗口功能
+
+![](MSGWindow.png)
+
+------
+
+#### 2023-04-07
+
+1.在Photoshop中绘制AccountMenu账号界面
+
+2.实现账号界面的打印
+
+------
+
 ## 五子棋更新日志
 
 ### V1.0

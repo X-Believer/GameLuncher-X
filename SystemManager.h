@@ -18,6 +18,9 @@ class SystemManager:public Identity
 {
 public:
 
+	//默认构造
+	SystemManager();
+
 	//构造函数
 	SystemManager(string name,string pwd);
 
@@ -32,6 +35,9 @@ public:
 
 	//账户菜单
 	string AccountMenu(string page);
+
+	//信息窗口
+	int MSGWindow(string page, const char* word);
 
 	//显示信息(系统信息)
 	virtual void ShowInfo();
