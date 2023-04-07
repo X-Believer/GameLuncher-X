@@ -31,11 +31,14 @@ namespace
 	int Botton = 0;//调音量1 返回主菜单2 退出登录3 游戏音效4 背景音乐5 选择关卡6 切换账号7
     //排行榜8 返回9 退出10
 	int Xvolume = 293;//音量圆圈所在位置
+
+	//账号菜单控制量
+	int BottonAccount = 0;
 }
 
 int MusicFlag = 1;//是否播放音乐
 int SoundFlag = 1;//是否打开游戏音效
-int IsLogin = 0;//是否登录
+int IsLogin = 1;//是否登录
 
 //构造函数
 SystemManager::SystemManager(string name,string pwd)
@@ -475,7 +478,167 @@ int SystemManager::UserDO(string page)
 	//账户菜单交互
 	else if (page == "AccountMenu")
 	{
-	    
+	    //未登录界面
+	    if (IsLogin == 0)
+	    {
+			//返回
+			if (msg.x > 21 && msg.x < 81 && msg.y>16 && msg.y < 55)
+			{
+				BottonAccount = 1;
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+
+			//登录/注册
+			else if (msg.x > 345 && msg.x < 480 && msg.y>323 && msg.y < 353)
+			{
+				BottonAccount = 2;
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+
+			//遇到问题
+			else if (msg.x > 532 && msg.x < 616 && msg.y>330 && msg.y < 346)
+			{
+				BottonAccount = 3;
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+
+			//注册账号
+			else if (msg.x > 444 && msg.x < 516 && msg.y>428 && msg.y < 441)
+			{
+				BottonAccount = 4;
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+
+			//输入账号
+			else if (msg.x > 374 && msg.x < 620 && msg.y>213 && msg.y < 243)
+			{
+				BottonAccount = 5;
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+
+			//输入密码
+			else if (msg.x > 374 && msg.x < 620 && msg.y>267 && msg.y < 295)
+			{
+				BottonAccount = 6;
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+
+			//无操作
+			else
+			{
+				BottonAccount = 0;
+				return 0;
+			}
+		}
+
+		//已登录界面
+		if (IsLogin == 1)
+		{
+			//返回
+			if (msg.x > 21 && msg.x < 81 && msg.y>16 && msg.y < 55)
+			{
+				BottonAccount = 1;
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+
+			//查看成就
+			else if (msg.x > 353 && msg.x < 608 && msg.y>252 && msg.y < 359)
+			{
+				BottonAccount = 7;
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+
+			//退出登录
+			else if (msg.x > 451 && msg.x < 508 && msg.y>420 && msg.y < 434)
+			{
+				BottonAccount = 8;
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+
+			//注销账户
+			else if (msg.x > 451 && msg.x < 508 && msg.y>450 && msg.y < 464)
+			{
+				BottonAccount = 9;
+				if (msg.message == WM_LBUTTONDOWN)
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+
+			//无操作
+			else
+			{
+				BottonAccount = 0;
+				return 0;
+			}
+		}
 	}
 	
     //无操作
@@ -654,11 +817,119 @@ string SystemManager::AccountMenu(string page)
 		BeginBatchDraw();
 
 		putimagePNG(NULL, 0, 0, &Accountmenu); putimagePNG(NULL, 102, 16, &Window); putimagePNG(NULL, 19, 26, &GoBack);
+		putimagePNG(NULL, 423, 131, &Avatar); putimagePNG(NULL, 911, 498, &Manager); 
+		if (IsLogin == 0)
+		{
+			putimagePNG(NULL, 351, 213, &Account1); putimagePNG(NULL, 351, 267, &Password);
+			putimagePNG(NULL, 345, 323, &Login1); putimagePNG(NULL, 532, 330, &Problem);
+			putimagePNG(NULL, 444, 428, &CreateAccount);
+		}
+		else
+		{
+			putimagePNG(NULL, 429, 209, &UserName); putimagePNG(NULL, 352, 252, &Achievement);
+			putimagePNG(NULL, 452, 420, &Logout); putimagePNG(NULL, 452, 451, &CancelAccount);
+		}
+
+		//返回
+		if (BottonAccount == 1)
+		{
+			putimagePNG(NULL, 19, 26, &GoBack_glow);
+			if (status == 1)
+			{
+				EndBatchDraw();
+				return "MainMenu";
+			}
+		}
+
+		//登录/注册
+		else if (BottonAccount == 2)
+		{
+			putimagePNG(NULL, 345, 323, &Login_glow);
+			if (status == 1)
+			{
+				EndBatchDraw();
+				return "MainMenu";
+			}
+		}
+
+		//遇到问题
+		else if (BottonAccount == 3)
+		{
+			putimagePNG(NULL, 532, 330, &Problem_glow);
+			if (status == 1)
+			{
+				EndBatchDraw();
+				//return "MainMenu";
+			}
+		}
+
+		//注册账号
+		else if (BottonAccount == 4)
+		{
+			putimagePNG(NULL, 444, 428, &CreateAccount_glow);
+			if (status == 1)
+			{
+				EndBatchDraw();
+				//return "MainMenu";
+			}
+		}
+
+		//输入账号
+		else if (BottonAccount == 5)
+		{
+			if (status == 1)
+			{
+				EndBatchDraw();
+				//return "MainMenu";
+			}
+		}
+
+		//输入密码
+		else if (BottonAccount == 6)
+		{
+			if (status == 1)
+			{
+				EndBatchDraw();
+				//return "MainMenu";
+			}
+		}
+
+		//查看成就
+		else if (BottonAccount == 7)
+		{
+			putimagePNG(NULL, 352, 252, &Achievement_glow);
+			if (status == 1)
+			{
+				EndBatchDraw();
+				//return "MainMenu";
+			}
+		}
+
+		//退出登录
+		else if (BottonAccount == 8)
+		{
+			putimagePNG(NULL, 452, 420, &Logout_glow);
+			if (status == 1)
+			{
+				EndBatchDraw();
+				//return "MainMenu";
+			}
+		}
+
+		//注销账户
+		else if (BottonAccount == 9)
+		{
+			putimagePNG(NULL, 452, 451, &CancelAccount_glow);
+			if (status == 1)
+			{
+				EndBatchDraw();
+				//return "MainMenu";
+			}
+		}
 
 		EndBatchDraw();
 	}
 	
-	return "MainMenu";
 }
 
 //显示信息(系统信息)
