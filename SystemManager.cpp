@@ -19,9 +19,9 @@ namespace
 
 	//账户菜单图片
 	IMAGE Accountmenu; IMAGE Account1; IMAGE Achievement; IMAGE Achievement_glow; IMAGE Avatar;
-	IMAGE CancelAccount; IMAGE CancelAccount_glow; IMAGE CreateAccount; IMAGE CreateAccount_glow;
+	IMAGE CancelAccount; IMAGE CancelAccount_glow; IMAGE NowOp_glow; IMAGE NowMSG;
 	IMAGE Login1; IMAGE Login_glow; IMAGE Logout; IMAGE Logout_glow; IMAGE Manager; IMAGE Password;
-	IMAGE Problem; IMAGE Problem_glow; IMAGE UserName; IMAGE UserName_glow; IMAGE Window;
+	IMAGE Problem; IMAGE Problem_glow; IMAGE UserName; IMAGE UserName_glow; IMAGE Window; IMAGE NowOp;
 
 	//信息窗口图片
 	IMAGE No_glow;IMAGE No; IMAGE Yes; IMAGE Success; IMAGE Sure; 
@@ -37,7 +37,7 @@ namespace
 	int Xvolume = 293;//音量圆圈所在位置
 
 	//账号菜单控制量
-	int BottonAccount = 0;
+	int BottonAccount = 0; int nowOp=1;//1登录，2注册
 
 	//信息窗口控制量
 	int BottonWindow = 0;
@@ -144,22 +144,37 @@ string SystemManager::SettingMenu(string page)
 				{
 					mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
 				}
-				if (page == "MainMenu")
+				//当前已登录
+				if (IsLogin == 1)
 				{
-					int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGIsLogout.png");
+					if (page == "MainMenu")
+					{
+						int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGIsLogout.png");
+						if (windowChoice != 2)
+						{
+							continue;
+						}
+					}
+					else if (page != "MainMenu")
+					{
+						int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGLoss.png");
+						if (windowChoice != 2)
+						{
+							continue;
+						}
+					}
+				}
+
+				//当前未登录
+				else
+				{
+					int windowChoice = MSGWindow("Wrong", "Graph/MSGWindow/MSGNoLogin.png");
 					if (windowChoice != 2)
 					{
 						continue;
 					}
 				}
-				else if (page != "MainMenu")
-				{
-					int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGLoss.png");
-					if (windowChoice != 2)
-					{
-						continue;
-					}
-				}
+				
 				IsLogin = 0;
 				EndBatchDraw();
 				return "LogOut";
@@ -902,8 +917,7 @@ string SystemManager::AccountMenu(string page)
 		loadimage(&Accountmenu, "Graph/AccountMenu/AccountMenu.png"); loadimage(&Account1, "Graph/AccountMenu/Account.png");
 		loadimage(&Achievement, "Graph/AccountMenu/Achievement.png"); loadimage(&Achievement_glow, "Graph/AccountMenu/Achievement_glow.png");
 		loadimage(&Avatar, "Graph/AccountMenu/Avatar.png"); loadimage(&CancelAccount, "Graph/AccountMenu/CancelAccount.png");
-		loadimage(&CancelAccount_glow, "Graph/AccountMenu/CancelAccount_glow.png"); loadimage(&CreateAccount, "Graph/AccountMenu/CreateAccount.png");
-		loadimage(&CreateAccount_glow, "Graph/AccountMenu/CreateAccount_glow.png"); loadimage(&Login1, "Graph/AccountMenu/Login.png");
+		loadimage(&CancelAccount_glow, "Graph/AccountMenu/CancelAccount_glow.png");  loadimage(&Login1, "Graph/AccountMenu/Login.png");
 		loadimage(&Login_glow, "Graph/AccountMenu/Login_glow.png"); loadimage(&Logout, "Graph/AccountMenu/Logout.png");
 		loadimage(&Logout_glow, "Graph/AccountMenu/Logout_glow.png"); loadimage(&Logout, "Graph/AccountMenu/Logout.png");
 		loadimage(&Manager, "Graph/AccountMenu/Manager.png"); loadimage(&Password, "Graph/AccountMenu/Password.png");
@@ -916,6 +930,19 @@ string SystemManager::AccountMenu(string page)
 	{
 		int status = UserDO("AccountMenu");
 
+		if (nowOp == 2)
+		{
+			loadimage(&NowOp, "Graph/AccountMenu/ToLogin.png");
+			loadimage(&NowOp_glow, "Graph/AccountMenu/ToLogin_glow.png");
+			loadimage(&NowMSG, "Graph/AccountMenu/NowCreate.png");
+		}
+		else if (nowOp == 1)
+		{
+			loadimage(&NowOp, "Graph/AccountMenu/CreateAccount.png");
+			loadimage(&NowOp_glow, "Graph/AccountMenu/CreateAccount_glow.png");
+			loadimage(&NowMSG, "Graph/AccountMenu/NowLogin.png");
+		}
+
 		BeginBatchDraw();
 
 		putimagePNG(NULL, 0, 0, &Accountmenu); putimagePNG(NULL, 102, 16, &Window); putimagePNG(NULL, 19, 26, &GoBack);
@@ -924,7 +951,7 @@ string SystemManager::AccountMenu(string page)
 		{
 			putimagePNG(NULL, 351, 213, &Account1); putimagePNG(NULL, 351, 267, &Password);
 			putimagePNG(NULL, 345, 323, &Login1); putimagePNG(NULL, 532, 330, &Problem);
-			putimagePNG(NULL, 444, 428, &CreateAccount);
+			putimagePNG(NULL, 444, 428, &NowOp); putimagePNG(NULL, 423, 385, &NowMSG);
 		}
 		else
 		{
@@ -949,7 +976,21 @@ string SystemManager::AccountMenu(string page)
 			putimagePNG(NULL, 345, 323, &Login_glow);
 			if (status == 1)
 			{
-				EndBatchDraw();
+				//读取当前用户输入
+				string NowName = " "; string NowPwd = " ";
+				if (NowName == " " || NowPwd == " ")
+				{
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+					}
+					int windowChoice = MSGWindow("Wrong", "Graph/MSGWindow/MSGEmpty.png");
+					if (windowChoice == 1)
+					{
+						EndBatchDraw();
+						continue;
+					}
+				}
 				return "MainMenu";
 			}
 		}
@@ -965,14 +1006,15 @@ string SystemManager::AccountMenu(string page)
 			}
 		}
 
-		//注册账号
+		//注册/登录转换
 		else if (BottonAccount == 4)
 		{
-			putimagePNG(NULL, 444, 428, &CreateAccount_glow);
+			putimagePNG(NULL, 444, 428, &NowOp_glow);
 			if (status == 1)
 			{
+				nowOp = nowOp == 1 ? 2 : 1;
 				EndBatchDraw();
-				//return "MainMenu";
+				continue;
 			}
 		}
 
@@ -1013,6 +1055,26 @@ string SystemManager::AccountMenu(string page)
 			putimagePNG(NULL, 452, 420, &Logout_glow);
 			if (status == 1)
 			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+				}
+				if (page == "MainMenu")
+				{
+					int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGIsLogout.png");
+					if (windowChoice != 2)
+					{
+						continue;
+					}
+					else
+					{
+						int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGLoss.png");
+						if (windowChoice != 2)
+						{
+							continue;
+						}
+					}
+				}
 				EndBatchDraw();
 				//return "MainMenu";
 			}
@@ -1117,6 +1179,24 @@ int SystemManager::MSGWindow(string page,const char* word)
 	}
 
 	else return 0;
+}
+
+//登录验证
+string SystemManager::SystemLogin(string name, string pwd, string filename, int type)
+{
+	Identity* person = NULL;
+
+	ifstream ifs;
+	ifs.open(filename, ios::in);
+
+	//文件不存在
+	if(!ifs.is_open())
+	{
+		ifs.close();
+		return "NoFile";
+	}
+
+	
 }
 
 //显示信息(系统信息)

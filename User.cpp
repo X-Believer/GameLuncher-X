@@ -1,7 +1,7 @@
 #include "User.h"
 
 //¹¹Ôìº¯Êý
-User::User(int id, string name, string pwd)
+User::User(int id, string name, string pwd, bool vip)
 {
 
 }

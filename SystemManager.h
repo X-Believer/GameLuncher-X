@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include<fstream>
 #include<graphics.h>
 #include<vector>
 #include<string>
@@ -41,6 +42,9 @@ public:
 
 	//显示信息(系统信息)
 	virtual void ShowInfo();
+
+	//登录验证
+	string SystemLogin(string name, string pwd, string filename,int type);
 
 	//添加账号
 	void AddAccount();
