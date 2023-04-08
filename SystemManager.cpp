@@ -20,9 +20,10 @@ namespace
 
 	//账户菜单图片
 	IMAGE Accountmenu; IMAGE Account1; IMAGE Achievement; IMAGE Achievement_glow; IMAGE Avatar;
-	IMAGE CancelAccount; IMAGE CancelAccount_glow; IMAGE NowOp_glow; IMAGE NowMSG;
+	IMAGE CancelAccount; IMAGE CancelAccount_glow; IMAGE NowOp_glow; IMAGE NowMSG; IMAGE bg;
 	IMAGE Login1; IMAGE Login_glow; IMAGE Logout; IMAGE Logout_glow; IMAGE Manager; IMAGE Password;
 	IMAGE Problem; IMAGE Problem_glow; IMAGE UserName; IMAGE UserName_glow; IMAGE Window; IMAGE NowOp;
+	IMAGE Account1_glow; IMAGE Password_glow; IMAGE EndScan;
 
 	//信息窗口图片
 	IMAGE No_glow;IMAGE No; IMAGE Yes; IMAGE Success; IMAGE Sure; 
@@ -39,6 +40,8 @@ namespace
 
 	//账号菜单控制量
 	int BottonAccount = 0; int nowOp=1;//1登录，2注册
+	string Accountin; string Pwdin;//用户输入的账号密码
+	int isscan = 0;
 
 	//信息窗口控制量
 	int BottonWindow = 0;
@@ -46,7 +49,7 @@ namespace
 
 int MusicFlag = 1;//是否播放音乐
 int SoundFlag = 1;//是否打开游戏音效
-int IsLogin = 1;//是否登录
+int IsLogin = 0;//是否登录
 
 //默认构造
 SystemManager::SystemManager()
@@ -57,7 +60,9 @@ SystemManager::SystemManager()
 //构造函数
 SystemManager::SystemManager(string name,string pwd)
 {
-
+	this->m_Name = name;
+	this->m_Pwd = pwd;
+	this->m_isVip = 1;
 }
 
 //设置菜单
@@ -620,6 +625,7 @@ int SystemManager::UserDO(string page)
 			else if (msg.x > 374 && msg.x < 620 && msg.y>213 && msg.y < 243)
 			{
 				BottonAccount = 5;
+				isscan = 1;
 				if (msg.message == WM_LBUTTONDOWN)
 				{
 					if (SoundFlag == 1)
@@ -634,6 +640,7 @@ int SystemManager::UserDO(string page)
 			else if (msg.x > 374 && msg.x < 620 && msg.y>267 && msg.y < 295)
 			{
 				BottonAccount = 6;
+				isscan = 1;
 				if (msg.message == WM_LBUTTONDOWN)
 				{
 					if (SoundFlag == 1)
@@ -937,11 +944,20 @@ string SystemManager::AccountMenu(string page)
 		loadimage(&CancelAccount_glow, "Graph/AccountMenu/CancelAccount_glow.png");  loadimage(&Login1, "Graph/AccountMenu/Login.png");
 		loadimage(&Login_glow, "Graph/AccountMenu/Login_glow.png"); loadimage(&Logout, "Graph/AccountMenu/Logout.png");
 		loadimage(&Logout_glow, "Graph/AccountMenu/Logout_glow.png"); loadimage(&Logout, "Graph/AccountMenu/Logout.png");
-		loadimage(&Manager, "Graph/AccountMenu/Manager.png"); loadimage(&Password, "Graph/AccountMenu/Password.png");
+		loadimage(&Manager, "Graph/AccountMenu/Manager.png"); loadimage(&Password, "Graph/AccountMenu/Password.png"); loadimage(&bg, "Graph/AccountMenu/bg.png");
 		loadimage(&Problem, "Graph/AccountMenu/Problem.png"); loadimage(&Problem_glow, "Graph/AccountMenu/Problem_glow.png");
 		loadimage(&UserName, "Graph/AccountMenu/UserName.png"); loadimage(&UserName_glow, "Graph/AccountMenu/UserName_glow.png");
 		loadimage(&Window, "Graph/AccountMenu/Window.png"); loadimage(&GoBack, "Graph/SettingMenu/GoBack.png"); loadimage(&GoBack_glow, "Graph/SettingMenu/GoBack_glow.png");
+		loadimage(&Account1_glow, "Graph/AccountMenu/Account_glow.png"); loadimage(&Password_glow, "Graph/AccountMenu/Password_glow.png");
+		loadimage(&EndScan, "Graph/AccountMenu/EndScan.png");
 	}
+
+	settextcolor(WHITE);
+	settextstyle(24, 9, _T("Arial"));
+	setbkmode(TRANSPARENT);
+	LOGFONT textF;
+	gettextstyle(&textF);
+	textF.lfQuality= ANTIALIASED_QUALITY;
 
 	while (1)
 	{
@@ -969,11 +985,13 @@ string SystemManager::AccountMenu(string page)
 			putimagePNG(NULL, 351, 213, &Account1); putimagePNG(NULL, 351, 267, &Password);
 			putimagePNG(NULL, 345, 323, &Login1); putimagePNG(NULL, 532, 330, &Problem);
 			putimagePNG(NULL, 444, 428, &NowOp); putimagePNG(NULL, 423, 385, &NowMSG);
+			outtextxy(395, 213, _T(Accountin.c_str())); outtextxy(395, 268, _T(Pwdin.c_str()));
 		}
 		else
 		{
 			putimagePNG(NULL, 429, 209, &UserName); putimagePNG(NULL, 352, 252, &Achievement);
 			putimagePNG(NULL, 452, 420, &Logout); putimagePNG(NULL, 452, 451, &CancelAccount);
+			Accountin.clear(); Pwdin.clear();
 		}
 
 		//返回
@@ -994,11 +1012,8 @@ string SystemManager::AccountMenu(string page)
 			putimagePNG(NULL, 345, 323, &Login_glow);
 			if (status == 1)
 			{
-				//读取当前用户输入
-				string NowName = "1"; string NowPwd = "1";
-
 				//用户输入为空
-				if (NowName == " " || NowPwd == " ")
+				if (Accountin.empty() || Pwdin.empty())
 				{
 					if (SoundFlag == 1)
 					{
@@ -1012,10 +1027,7 @@ string SystemManager::AccountMenu(string page)
 				//验证信息
 				else
 				{
-					//测试
-					NowName = "Xing"; NowPwd = "123cpt";
-
-					string MSGLogin = SystemLogin(NowName, NowPwd, USER_FILE, nowOp);
+					string MSGLogin = SystemLogin(Accountin, Pwdin, USER_FILE, nowOp);
 
 					//文件不存在
 					if (MSGLogin == "NoFile")
@@ -1110,8 +1122,27 @@ string SystemManager::AccountMenu(string page)
 		{
 			if (status == 1)
 			{
+				putimagePNG(NULL, 351, 213, &Account1_glow);
+				putimagePNG(NULL, 414, 192, &EndScan);
+				char c;
 				EndBatchDraw();
-				//return "MainMenu";
+				while ((c = _getch()) != '\r')
+				{
+					if (c == '\b' && (!Accountin.empty()))
+					{
+						Accountin.pop_back();
+						putimagePNG(NULL, 388, 213, &bg);
+						outtextxy(395, 213, _T(Accountin.c_str()));
+					}
+					else
+					{
+						if (Accountin.size() < 15)
+							Accountin += c;
+					}
+					putimagePNG(NULL, 388, 213, &bg);
+					outtextxy(395, 213, _T(Accountin.c_str()));
+				}
+				
 			}
 		}
 
@@ -1120,8 +1151,28 @@ string SystemManager::AccountMenu(string page)
 		{
 			if (status == 1)
 			{
+				char c;
+				putimagePNG(NULL, 351, 267, &Password_glow);
+				putimagePNG(NULL, 414, 192, &EndScan);
 				EndBatchDraw();
-				//return "MainMenu";
+				while ((c = _getch()) != '\r')
+				{
+					if (c == '\b' && (!Pwdin.empty()))
+					{
+						Pwdin.pop_back();
+						putimagePNG(NULL, 388, 266, &bg);
+						outtextxy(395, 268, _T(Pwdin.c_str()));
+					}
+					else
+					{
+						if(Pwdin.size()<15)
+						    Pwdin += c;
+					}
+					putimagePNG(NULL, 388, 266, &bg);
+					outtextxy(395, 268, _T(Pwdin.c_str()));
+				}
+				
+				EndBatchDraw();
 			}
 		}
 
