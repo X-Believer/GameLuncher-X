@@ -7,7 +7,7 @@ class User :public Identity
 public:
 	
 	//构造函数
-	User(int id, string name, string pwd,bool vip);
+	User(string id, string name, string pwd,int vip);
 
 	//显示信息
 	virtual void ShowInfo();

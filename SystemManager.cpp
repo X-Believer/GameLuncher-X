@@ -2,6 +2,7 @@
 #include "Transparent.h"
 #include "Games.h"
 #include "FiveChess.h"
+#include"GlobalFile.h"
 namespace
 {
 	//主菜单图片
@@ -28,12 +29,12 @@ namespace
 	IMAGE Wrong; IMAGE Yes_glow; IMAGE Word;
 
 	//主菜单控制量
-	int LBotton = 0; int RBotton = 0;
-	//0游戏机 10城堡 10小游戏1 20小游戏2 30小游戏3 40小游戏4
+	int LBotton = 0; int RBotton = 0; char* NowUser =(char*)"X-Believer";//当前用户
+	Identity* Person = NULL; int NowRank = 1;//当前用户指针、当前排名
+
 
 	//设置菜单控制量
-	int Botton = 0;//调音量1 返回主菜单2 退出登录3 游戏音效4 背景音乐5 选择关卡6 切换账号7
-    //排行榜8 返回9 退出10
+	int Botton = 0;
 	int Xvolume = 293;//音量圆圈所在位置
 
 	//账号菜单控制量
@@ -144,6 +145,7 @@ string SystemManager::SettingMenu(string page)
 				{
 					mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
 				}
+
 				//当前已登录
 				if (IsLogin == 1)
 				{
@@ -168,14 +170,21 @@ string SystemManager::SettingMenu(string page)
 				//当前未登录
 				else
 				{
-					int windowChoice = MSGWindow("Wrong", "Graph/MSGWindow/MSGNoLogin.png");
-					if (windowChoice != 2)
+					if (SoundFlag == 1)
 					{
-						continue;
+						mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
 					}
+					EndBatchDraw();
+                    MSGWindow("Wrong", "Graph/MSGWindow/MSGNoLogin.png");
+					continue;	
 				}
-				
+
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Tip1.mp3", 0, 0, 0);
+				}
 				IsLogin = 0;
+				MSGWindow("Success", "Graph/MSGWindow/MSGLogout.png");
 				EndBatchDraw();
 				return "LogOut";
 			}
@@ -222,8 +231,9 @@ string SystemManager::SettingMenu(string page)
 			putimagePNG(NULL, 398, 378, &ChangeAccount_glow);
 			if (status == 1)
 			{
-				/*EndBatchDraw();
-				return "ChangeAccount";*/
+		        AccountMenu("SettingMenu");
+				EndBatchDraw();
+				continue;
 			}
 		}
 
@@ -781,6 +791,13 @@ string SystemManager::ShowMenu(int page)
 		mciSendString("play MainTheme repeat", 0, 0, 0);
 	}
 
+	//每次进入主菜单都更新登录状态
+	if (IsLogin == 0 && Person != NULL)
+	{
+		delete Person;
+		Person = NULL;
+	}
+
 	while (1)
 	{
 		int status = UserDO("MainMenu");
@@ -965,6 +982,7 @@ string SystemManager::AccountMenu(string page)
 			putimagePNG(NULL, 19, 26, &GoBack_glow);
 			if (status == 1)
 			{
+				nowOp = 1;
 				EndBatchDraw();
 				return "MainMenu";
 			}
@@ -977,21 +995,90 @@ string SystemManager::AccountMenu(string page)
 			if (status == 1)
 			{
 				//读取当前用户输入
-				string NowName = " "; string NowPwd = " ";
+				string NowName = "1"; string NowPwd = "1";
+
+				//用户输入为空
 				if (NowName == " " || NowPwd == " ")
 				{
 					if (SoundFlag == 1)
 					{
 						mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
 					}
-					int windowChoice = MSGWindow("Wrong", "Graph/MSGWindow/MSGEmpty.png");
-					if (windowChoice == 1)
+					EndBatchDraw();
+					MSGWindow("Wrong", "Graph/MSGWindow/MSGEmpty.png");
+					continue;
+				}
+
+				//验证信息
+				else
+				{
+					//测试
+					NowName = "Xing"; NowPwd = "123cpt";
+
+					string MSGLogin = SystemLogin(NowName, NowPwd, USER_FILE, nowOp);
+
+					//文件不存在
+					if (MSGLogin == "NoFile")
 					{
+						if (SoundFlag == 1)
+						{
+							mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+						}
 						EndBatchDraw();
+						MSGWindow("Wrong", "Graph/MSGWindow/MSGNoFile.png");
+						continue;
+					}
+
+					//登录无匹配
+					else if (MSGLogin == "NotMatch")
+					{
+						if (SoundFlag == 1)
+						{
+							mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+						}
+						EndBatchDraw();
+						MSGWindow("Wrong", "Graph/MSGWindow/MSGWrongpwd.png");
+						continue;
+					}
+
+					//登录匹配
+					else if (MSGLogin == "Match")
+					{
+						if (SoundFlag == 1)
+						{
+							mciSendString("play Audio/MainMenu/Tip1.mp3", 0, 0, 0);
+						}
+						IsLogin = 1;
+						EndBatchDraw();
+						MSGWindow("Success", "Graph/MSGWindow/MSGHasLogin.png");
+						continue;
+					}
+
+					//注册重复
+					else if (MSGLogin == "CreateRepeat")
+					{
+						if (SoundFlag == 1)
+						{
+							mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+						}
+						EndBatchDraw();
+						MSGWindow("Wrong", "Graph/MSGWindow/MSGUserName.png");
+						continue;
+					}
+
+					//注册成功(返回值是Id)
+					else 
+					{
+						if (SoundFlag == 1)
+						{
+							mciSendString("play Audio/MainMenu/Tip1.mp3", 0, 0, 0);
+						}
+						nowOp = 1;
+						EndBatchDraw();
+						MSGWindow("Success", "Graph/MSGWindow/MSGCreate.png");
 						continue;
 					}
 				}
-				return "MainMenu";
 			}
 		}
 
@@ -1059,24 +1146,28 @@ string SystemManager::AccountMenu(string page)
 				{
 					mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
 				}
-				if (page == "MainMenu")
+				
+				int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGIsLogout.png");
+				if (windowChoice != 2)
 				{
-					int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGIsLogout.png");
-					if (windowChoice != 2)
-					{
-						continue;
-					}
-					else
-					{
-						int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGLoss.png");
-						if (windowChoice != 2)
-						{
-							continue;
-						}
-					}
+					continue;
 				}
+
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Tip1.mp3", 0, 0, 0);
+				}
+				IsLogin = 0;
+				if (Person != NULL)
+				{
+					delete Person;
+					Person = NULL;
+				}
+				MSGWindow("Success", "Graph/MSGWindow/MSGLogout.png");
 				EndBatchDraw();
-				//return "MainMenu";
+				continue;
+
+				EndBatchDraw();
 			}
 		}
 
@@ -1114,29 +1205,10 @@ int SystemManager::MSGWindow(string page,const char* word)
 			putimagePNG(NULL, 276, 144, &Wrong);
 		}
 		putimagePNG(NULL, 389, 239, &Word);
+		//putimagePNG(NULL, 357, 324, &Yes);
 
-		while (1)
-		{
-			int status = UserDO("MSGWindow");
-
-			BeginBatchDraw();
-			
-
-			putimagePNG(NULL, 357, 324, &Yes);
-			
-			//点击确认
-			if (BottonWindow == 1)
-			{
-				putimagePNG(NULL, 357, 324, &Yes_glow);
-				if (status == 1)
-				{
-					EndBatchDraw();
-					return 1;
-				}
-			}
-
-			EndBatchDraw();
-		}
+		Sleep(1000);
+		return 0;
 	}
 
 	//操作确认窗口
@@ -1144,18 +1216,18 @@ int SystemManager::MSGWindow(string page,const char* word)
 	{
 		putimagePNG(NULL, 276, 144, &Sure);
 		putimagePNG(NULL, 389, 239, &Word);
+		putimagePNG(NULL, 357, 324, &No);
+		putimagePNG(NULL, 498, 324, &Yes);
 		while (1)
 		{
 			int status = UserDO("MSGWindow");
 
 			BeginBatchDraw();
-			putimagePNG(NULL, 357, 324, &No);
-			putimagePNG(NULL, 498, 324, &Yes);
-
+			
 			//点击取消
 			if (BottonWindow == 1)
 			{
-				putimagePNG(NULL, 357, 324, &No_glow);
+				//putimagePNG(NULL, 357, 324, &No_glow);
 				if (status == 1)
 				{
 					EndBatchDraw();
@@ -1166,7 +1238,7 @@ int SystemManager::MSGWindow(string page,const char* word)
 			//点击确认
 			if (BottonWindow == 2)
 			{
-				putimagePNG(NULL, 498, 324, &Yes_glow);
+				//putimagePNG(NULL, 498, 324, &Yes_glow);
 				if (status == 1)
 				{
 					EndBatchDraw();
@@ -1181,11 +1253,9 @@ int SystemManager::MSGWindow(string page,const char* word)
 	else return 0;
 }
 
-//登录验证
+//登录验证(type:1登录，2注册)
 string SystemManager::SystemLogin(string name, string pwd, string filename, int type)
 {
-	Identity* person = NULL;
-
 	ifstream ifs;
 	ifs.open(filename, ios::in);
 
@@ -1196,7 +1266,63 @@ string SystemManager::SystemLogin(string name, string pwd, string filename, int 
 		return "NoFile";
 	}
 
+	//登录文件匹配
+	if (type == 1)
+	{
+		string fId; string fName; string fPwd; int fVip = 0;
+		while (ifs >> fId && ifs >> fName && ifs >> fPwd && ifs >> fVip)
+		{
+			if ((name == fId || name == fName) && pwd == fPwd)
+			{
+				//管理员登录
+				if (fId == "00000000")
+				{
+					NowUser = (char*)fName.c_str();
+					Person = new SystemManager(fName, fPwd);
+					ifs.close();
+					return "Match";
+				}
+
+				//普通用户登录
+				else
+				{
+					NowUser = (char*)fName.c_str();
+					Person = new User(fId, fName, fPwd, fVip);
+					ifs.close();
+					return "Match";
+				}
+			}
+		}
+		ifs.close();
+		return "NotMatch";
+	}
 	
+	//注册文件匹配
+	if (type == 2)
+	{
+		string fId; string fName; string fPwd; int fVip = 0;
+		while (ifs >> fId && ifs >> fName && ifs >> fPwd && ifs >> fVip)
+		{
+			//用户名重复
+			if (name == fId || name == fName)
+			{
+				ifs.close();
+				return "CreateRepeat";
+			}
+		}
+		ifs.close();
+
+	    //写入新用户
+		ofstream ofs;
+
+		ofs.open(filename, ios::out | ios::app);
+		time_t now = time(0);
+		//tm *ltm = localtime(&now);获取系统时间结构体
+		string id = to_string(now % 100000000);
+		ofs << id << " " << name << " " << pwd << " " << 0 << endl;
+		ofs.close();
+		return id;
+	}
 }
 
 //显示信息(系统信息)

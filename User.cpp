@@ -1,9 +1,12 @@
 #include "User.h"
 
 //构造函数
-User::User(int id, string name, string pwd, bool vip)
+User::User(string id, string name, string pwd, int vip)
 {
-
+	this->m_Id = id;
+	this->m_Name = name;
+	this->m_Pwd = pwd;
+	this->m_isVip = vip;
 }
 
 //显示信息

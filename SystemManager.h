@@ -7,6 +7,8 @@
 #include<mmsystem.h>
 #include<Windows.h>
 #include<conio.h>
+#include<ctime>
+#include"User.h"
 #include"Identity.h"
 #pragma comment(lib,"winmm.lib")
 using namespace std;
