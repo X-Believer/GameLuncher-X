@@ -29,10 +29,14 @@ namespace
 	IMAGE No_glow;IMAGE No; IMAGE Yes; IMAGE Success; IMAGE Sure; 
 	IMAGE Wrong; IMAGE Yes_glow; IMAGE Word;
 
+	//管理员菜单图片
+	IMAGE Before; IMAGE Before_glow; IMAGE Next; IMAGE Next_glow; IMAGE Delete; IMAGE Delete_glow;
+	IMAGE Edit; IMAGE Edit_glow; IMAGE ManagerMenu; IMAGE Preference; IMAGE Preference_glow;
+	IMAGE ShowPerson;
+
 	//主菜单控制量
 	int LBotton = 0; int RBotton = 0; char* NowUser =(char*)"X-Believer";//当前用户
 	Identity* Person = NULL; int NowRank = 1;//当前用户指针、当前排名
-
 
 	//设置菜单控制量
 	int Botton = 0;
@@ -45,6 +49,10 @@ namespace
 
 	//信息窗口控制量
 	int BottonWindow = 0;
+
+	//管理员菜单控制量
+	int BottonManager = 0; vector<User>UserInfo;//存储所有用户信息
+	int cnt = 0; int Page=1;//当前读取条数、页数
 }
 
 int MusicFlag = 1;//是否播放音乐
@@ -727,6 +735,213 @@ int SystemManager::UserDO(string page)
 		}
 	}
 
+	//管理员菜单交互
+	else if (page == "ManagerMenu")
+	{
+	    //返回
+		if (msg.x > 21 && msg.x < 81 && msg.y>16 && msg.y < 55)
+		{
+			BottonManager = 1;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//删除1
+		else if (msg.x > 680 && msg.x < 710 && msg.y>158 && msg.y < 188)
+		{
+			BottonManager = 21;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//编辑1
+		else if (msg.x > 637 && msg.x < 667 && msg.y>158 && msg.y < 188)
+		{
+			BottonManager = 31;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//删除2
+		else if (msg.x > 680 && msg.x < 710 && msg.y>209 && msg.y < 239)
+		{
+			BottonManager = 22;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//编辑2
+		else if (msg.x > 637 && msg.x < 667 && msg.y>209 && msg.y < 239)
+		{
+			BottonManager = 32;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//删除3
+		else if (msg.x > 680 && msg.x < 710 && msg.y>260 && msg.y < 290)
+		{
+			BottonManager = 23;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//编辑3
+		else if (msg.x > 637 && msg.x < 667 && msg.y>260 && msg.y < 290)
+		{
+			BottonManager = 33;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//删除4
+		else if (msg.x > 680 && msg.x < 710 && msg.y>311 && msg.y < 341)
+		{
+			BottonManager = 24;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//编辑4
+		else if (msg.x > 637 && msg.x < 667 && msg.y>311 && msg.y < 341)
+		{
+		BottonManager = 34;
+		if (msg.message == WM_LBUTTONDOWN)
+		{
+			if (SoundFlag == 1)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			}
+			return 1;
+		}
+		}
+
+		//删除5
+		else if (msg.x > 680 && msg.x < 710 && msg.y>362 && msg.y < 392)
+		{
+			BottonManager = 25;
+			if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+				}
+				return 1;
+			}
+		}
+
+		//编辑5
+		else if (msg.x > 637 && msg.x < 667 && msg.y>362 && msg.y < 392)
+		{
+		    BottonManager = 35;
+		    if (msg.message == WM_LBUTTONDOWN)
+		    {
+			    if (SoundFlag == 1)
+			    {
+				    mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			    }
+			    return 1;
+		    }
+		}
+
+		//上一页
+		else if (msg.x > 350 && msg.x < 396 && msg.y>483 && msg.y < 517)
+		{
+		    BottonManager = 4;
+		    if (msg.message == WM_LBUTTONDOWN)
+		    {
+			    if (SoundFlag == 1)
+			    {
+				    mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			    }
+			    return 1;
+		    }
+		}
+
+		//下一页
+		else if (msg.x > 565 && msg.x < 612 && msg.y>483 && msg.y < 517)
+		{
+		    BottonManager = 5;
+		    if (msg.message == WM_LBUTTONDOWN)
+		    {
+			    if (SoundFlag == 1)
+			    {
+				    mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			    }
+			    return 1;
+		    }
+		}
+
+		//偏好设置
+		else if (msg.x > 418 && msg.x < 541 && msg.y>449 && msg.y < 469)
+		{
+		    BottonManager = 6;
+		    if (msg.message == WM_LBUTTONDOWN)
+		    {
+			    if (SoundFlag == 1)
+			    {
+				    mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			    }
+			    return 1;
+		    }
+		}
+
+		//无操作
+		else
+		{
+		    BottonManager = 0;
+			return 0;
+        }
+    }
+
 	//信息窗口交互
 	else if (page == "MSGWindow")
 	{
@@ -1063,6 +1278,10 @@ string SystemManager::AccountMenu(string page)
 						IsLogin = 1;
 						EndBatchDraw();
 						MSGWindow("Success", "Graph/MSGWindow/MSGHasLogin.png");
+						if (Accountin == "00000000" || Accountin == "Admin")
+						{
+							ShowInfo();
+						}
 						continue;
 					}
 
@@ -1376,22 +1595,197 @@ string SystemManager::SystemLogin(string name, string pwd, string filename, int 
 	}
 }
 
-//显示信息(系统信息)
+//显示信息(管理员窗口)
 void SystemManager::ShowInfo()
 {
+	//加载图片
+	if (1)
+	{
+		loadimage(&ManagerMenu, "Graph/ManagerMenu/ManagerMenu.png"); loadimage(&GoBack_glow, "Graph/SettingMenu/GoBack_glow.png");
+		loadimage(&GoBack, "Graph/SettingMenu/GoBack.png"); loadimage(&Before, "Graph/ManagerMenu/Before.png");
+		loadimage(&Before_glow, "Graph/ManagerMenu/Before_glow.png"); loadimage(&Next, "Graph/ManagerMenu/Next.png");
+		loadimage(&Next_glow, "Graph/ManagerMenu/Next_glow.png"); loadimage(&Delete, "Graph/ManagerMenu/Delete.png");
+		loadimage(&Delete_glow, "Graph/ManagerMenu/Delete_glow.png"); loadimage(&Edit, "Graph/ManagerMenu/Edit.png");
+		loadimage(&Edit_glow, "Graph/ManagerMenu/Edit_glow.png"); loadimage(&Preference, "Graph/ManagerMenu/Preference.png");
+		loadimage(&Preference_glow, "Graph/ManagerMenu/Preference_glow.png"); loadimage(&ShowPerson, "Graph/ManagerMenu/ShowPerson.png");
+		loadimage(&bg, "Graph/AccountMenu/bg.png",347);
+	}
 
-}
+	//设置字体
+	settextcolor(WHITE);
+	settextstyle(24, 9, _T("Arial"));
+	setbkmode(TRANSPARENT);
+	LOGFONT textF;
+	gettextstyle(&textF);
+	textF.lfQuality = ANTIALIASED_QUALITY;
 
-//添加账号
-void SystemManager::AddAccount()
-{
+	//读取所有用户
+	ifstream ifs;
+	ifs.open(USER_FILE, ios::in);
 
+	//文件不存在
+	if (!ifs.is_open())
+	{
+		ifs.close();
+		if (SoundFlag == 1)
+		{
+			mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+		}
+		MSGWindow("Wrong", "Graph/MSGWindow/MSGNoFile.png");
+		return;
+	}
+
+	else
+	{
+		string fId; string fName; string fPwd; int fVip = 0;
+		cnt = 0;//记录读取的条数
+		User temp; UserInfo.clear();
+		while (ifs >> fId && ifs >> fName && ifs >> fPwd && ifs >> fVip)
+		{
+			temp.m_Id = fId; temp.m_Name = fName; temp.m_Pwd = fPwd; temp.m_isVip = fVip;
+			UserInfo.push_back(temp);
+			cnt++;
+		}
+		ifs.close();
+	}
+	
+
+	while (1)
+	{
+		int status = UserDO("ManagerMenu");
+
+		BeginBatchDraw();
+
+		putimagePNG(NULL, 0, 0, &ManagerMenu); putimagePNG(NULL, 19, 26, &GoBack);
+
+		//打印用户信息
+		for (int i = 1 + (Page - 1) * 5, j = 1; i <= cnt-1 && j <= 5; i++, j++)
+		{
+			string InfoT = UserInfo[i].m_Id + " " + UserInfo[i].m_Name;
+			outtextxy(285, 155+(j-1)*51, _T(InfoT.c_str()));
+		}
+
+		//返回
+		if (BottonManager == 1)
+		{
+			putimagePNG(NULL, 19, 26, &GoBack_glow);
+			if (status == 1)
+			{
+				delete Person;
+				Person = NULL;
+				IsLogin = 0;
+				EndBatchDraw();
+				return;
+			}
+		}
+
+		//删除
+		else if (BottonManager >= 21 && BottonManager < 30)
+		{
+			putimagePNG(NULL, 680, 158 + (BottonManager - 21)*51, &Delete_glow);
+			if (status == 1)
+			{
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Tip.mp3", 0, 0, 0);
+				}
+				int windowChoice = MSGWindow("Sure", "Graph/MSGWindow/MSGCancel.png");
+				if (windowChoice != 2)
+				{
+					continue;
+				}
+				//重新写入文件
+				DeleteAccount(BottonManager-20 + (Page - 1) * 5, USER_FILE);
+
+				if (SoundFlag == 1)
+				{
+					mciSendString("play Audio/MainMenu/Tip1.mp3", 0, 0, 0);
+				}
+				MSGWindow("Success", "Graph/MSGWindow/MSGLogout.png");
+				putimagePNG(NULL, 285, 155, &bg); putimagePNG(NULL, 285, 206, &bg); putimagePNG(NULL, 285, 257, &bg);
+			    putimagePNG(NULL, 285, 308, &bg); putimagePNG(NULL, 285, 359, &bg);
+			}
+		}
+
+		//编辑
+		else if (BottonManager >= 31 && BottonManager < 40)
+		{
+			putimagePNG(NULL, 637, 160 + (BottonManager - 31) * 51, &Edit_glow);
+			if (status == 1)
+			{
+				
+			}
+		}
+
+		//上一页
+		else if (BottonManager == 4)
+		{
+			putimagePNG(NULL, 351, 483 , &Before_glow);
+			if (status == 1)
+			{
+				if (Page >= 2)
+				{
+					Page--;
+				}
+			}
+		}
+
+		//下一页
+		else if (BottonManager == 5)
+		{
+			putimagePNG(NULL, 567, 483, &Next_glow);
+			if (status == 1)
+			{
+				if (Page <= (cnt-1)/5)
+				{
+					Page++;
+				}
+			}
+		}
+
+		//偏好设置
+		else if (BottonManager == 6)
+		{
+			putimagePNG(NULL, 418, 449, &Preference_glow);
+			if (status == 1)
+			{
+
+			}
+		}
+
+	    EndBatchDraw();	
+	}
 }
 
 //删除账号
-void SystemManager::DeleteAccount()
+void SystemManager::DeleteAccount(int pos,string filename)
 {
+	UserInfo.erase(UserInfo.begin() + pos);
+	ofstream ofs;
+	ofs.open(filename, ios::trunc);
 
+	for (vector<User>::iterator it = UserInfo.begin(); it != UserInfo.end(); it++)
+	{
+		ofs << it->m_Id << " " << it->m_Name << " " << it->m_Pwd << " " << it->m_isVip << endl;
+	}
+	ofs.close();
+
+	//重新读入
+	ifstream ifs;
+	ifs.open(USER_FILE, ios::in);
+	UserInfo.clear();
+
+	string fId; string fName; string fPwd; int fVip = 0;
+	cnt = 0;//记录读取的条数
+	User temp; 
+
+	while (ifs >> fId && ifs >> fName && ifs >> fPwd && ifs >> fVip)
+	{
+		temp.m_Id = fId; temp.m_Name = fName; temp.m_Pwd = fPwd; temp.m_isVip = fVip;
+		UserInfo.push_back(temp);
+		cnt++;
+	}
+	ifs.close();
 }
 
 //析构函数

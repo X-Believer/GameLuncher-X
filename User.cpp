@@ -1,5 +1,11 @@
 #include "User.h"
 
+//默认构造
+User::User()
+{
+
+}
+
 //构造函数
 User::User(string id, string name, string pwd, int vip)
 {

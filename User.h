@@ -5,6 +5,9 @@
 class User :public Identity
 {
 public:
+
+	//默认构造
+	User();
 	
 	//构造函数
 	User(string id, string name, string pwd,int vip);

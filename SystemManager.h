@@ -42,17 +42,14 @@ public:
 	//信息窗口
 	int MSGWindow(string page, const char* word);
 
-	//显示信息(系统信息)
+	//显示信息(管理员窗口)
 	virtual void ShowInfo();
 
 	//登录验证
 	string SystemLogin(string name, string pwd, string filename,int type);
 
-	//添加账号
-	void AddAccount();
-
 	//删除账号
-	void DeleteAccount();
+	void DeleteAccount(int pos,string filename);
 
 	//析构函数
 	~SystemManager();
