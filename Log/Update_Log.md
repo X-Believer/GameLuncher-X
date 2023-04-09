@@ -110,6 +110,30 @@ By X-Believer
 
 ------
 
+#### 2023-04-09
+
+1.实现"SystemManager"中函数"AccountMenu"账户菜单所有功能
+
+2.实现"SystemManager"中函数"SystemLogin"登录验证功能
+
+3.实现"SystemManager"中函数"ShowInfo"显示信息功能
+
+4.实现"SystemManager"中函数"DeleteAccount"删除账号功能
+
+5.解决账户菜单中显示错误的Bug
+
+6.实现管理员管理账号功能
+
+7.账号系统基本完善
+
+8.完成V1.1版本的所有代码编写
+
+9.实现V1.1版本的打包输出
+
+![](AccountMenu.png)
+
+------
+
 ## 五子棋更新日志
 
 ### V1.0

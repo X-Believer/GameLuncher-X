@@ -35,7 +35,7 @@ namespace
 	IMAGE ShowPerson;
 
 	//主菜单控制量
-	int LBotton = 0; int RBotton = 0; char* NowUser =(char*)"X-Believer";//当前用户
+	int LBotton = 0; int RBotton = 0; 
 	Identity* Person = NULL; int NowRank = 1;//当前用户指针、当前排名
 
 	//设置菜单控制量
@@ -1204,9 +1204,9 @@ string SystemManager::AccountMenu(string page)
 		}
 		else
 		{
-			putimagePNG(NULL, 429, 209, &UserName); putimagePNG(NULL, 352, 252, &Achievement);
+			 putimagePNG(NULL, 352, 252, &Achievement);
 			putimagePNG(NULL, 452, 420, &Logout); putimagePNG(NULL, 452, 451, &CancelAccount);
-			Accountin.clear(); Pwdin.clear();
+			Accountin.clear(); Pwdin.clear(); outtextxy(478-5*(Person->m_Name.length()), 205, _T(Person->m_Name.c_str()));
 		}
 
 		//返回
@@ -1353,9 +1353,13 @@ string SystemManager::AccountMenu(string page)
 						putimagePNG(NULL, 388, 213, &bg);
 						outtextxy(395, 213, _T(Accountin.c_str()));
 					}
+					else if (c==27||c==9)
+					{
+						break;
+					}
 					else
 					{
-						if (Accountin.size() < 15)
+						if (Accountin.size() < 15 && c != '\b' && c != 32)
 							Accountin += c;
 					}
 					putimagePNG(NULL, 388, 213, &bg);
@@ -1382,9 +1386,13 @@ string SystemManager::AccountMenu(string page)
 						putimagePNG(NULL, 388, 266, &bg);
 						outtextxy(395, 268, _T(Pwdin.c_str()));
 					}
+					else if (c == 27 || c == 9)
+					{
+						break;
+					}
 					else
 					{
-						if(Pwdin.size()<15)
+						if(Pwdin.size()<15 && c != '\b' && c != 32)
 						    Pwdin += c;
 					}
 					putimagePNG(NULL, 388, 266, &bg);
@@ -1547,7 +1555,6 @@ string SystemManager::SystemLogin(string name, string pwd, string filename, int 
 				//管理员登录
 				if (fId == "00000000")
 				{
-					NowUser = (char*)fName.c_str();
 					Person = new SystemManager(fName, fPwd);
 					ifs.close();
 					return "Match";
@@ -1556,7 +1563,6 @@ string SystemManager::SystemLogin(string name, string pwd, string filename, int 
 				//普通用户登录
 				else
 				{
-					NowUser = (char*)fName.c_str();
 					Person = new User(fId, fName, fPwd, fVip);
 					ifs.close();
 					return "Match";
@@ -1683,7 +1689,7 @@ void SystemManager::ShowInfo()
 		else if (BottonManager >= 21 && BottonManager < 30)
 		{
 			putimagePNG(NULL, 680, 158 + (BottonManager - 21)*51, &Delete_glow);
-			if (status == 1)
+			if (status == 1 && (BottonManager - 20) + (Page - 1) * 5 <= UserInfo.size() - 1)
 			{
 				if (SoundFlag == 1)
 				{
@@ -1701,7 +1707,7 @@ void SystemManager::ShowInfo()
 				{
 					mciSendString("play Audio/MainMenu/Tip1.mp3", 0, 0, 0);
 				}
-				MSGWindow("Success", "Graph/MSGWindow/MSGLogout.png");
+				MSGWindow("Success", "Graph/MSGWindow/MSGHasDelete.png");
 				putimagePNG(NULL, 285, 155, &bg); putimagePNG(NULL, 285, 206, &bg); putimagePNG(NULL, 285, 257, &bg);
 			    putimagePNG(NULL, 285, 308, &bg); putimagePNG(NULL, 285, 359, &bg);
 			}
