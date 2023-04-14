@@ -48,12 +48,12 @@ void FiveChess::drawchess(int m, int n)
 	int x, y;
 	x = abs(m - 70) / 30 + 1;
 	y = abs(n - 10) / 30 + 1;
-	xNow = x; yNow = y;
 
 	if (board[x][y] != 0)
 		return;
 
 	board[x][y] = Turn == 1 ? 2 : 1;//1ÊÇºÚ£¬2ÊÇ°×
+	xNow = x; yNow = y;
 
 	if (Turn == 0)Turn = 1;
 	else if (Turn == 1 && isAi == 0)Turn = 0;
@@ -304,7 +304,7 @@ void FiveChess::RunGame()
 					board[xNow][yNow] = 0;
 					Turn = Turn == 1 ? 0 : 1;
 				}
-				else if (isAi == 1 && xNow != xAi && yNow != yAi)
+				else if (isAi == 1 && !(xNow == xAi && yNow == yAi))
 				{
 					board[xNow][yNow] = 0;
 					board[xAi][yAi] = 0;
