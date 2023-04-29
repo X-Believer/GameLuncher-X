@@ -9,31 +9,7 @@
 #include"cJSON.h"
 #include<stdio.h>
 #include<string.h>
-
-namespace
-{
-	//每个地图图层
-	struct layer
-	{
-		char name[32];
-		int *tiles;
-		int width;
-		int height;
-		int type;
-	};
-
-	//地图
-	struct map
-	{
-		int width;//单位:图块(42*42)
-		int height;
-
-		struct layer* layers;
-		int layerCount;
-	};
-
-	map gameMap;
-}
+using namespace std;
 
 class SuperMario:public Games
 {
@@ -42,8 +18,14 @@ public:
 	//读取地图文件
 	char* getFileContent(const char* fileName);
 
+	//解析图块集
+	bool TileInit();
+
 	//解析地图
 	bool MapInit();
+
+	//创建地图
+	void CreateMap();
 
 	//显示设置
 	virtual void ShowGameMenu();

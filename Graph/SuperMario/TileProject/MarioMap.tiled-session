@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Map1.tmj",
+    "activeFile": "LevelMap/Level1-1.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -15,6 +15,14 @@
             "viewCenter": {
                 "x": 3004.5988758303524,
                 "y": 283.5973428717425
+            }
+        },
+        "LevelMap/Level1-1.tmj": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1181,
+                "y": 272
             }
         },
         "Map.tmx": {
@@ -29,8 +37,8 @@
             "scale": 0.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1255,
-                "y": 272
+                "x": 4228,
+                "y": 273
             }
         },
         "Map1.tmx": {
@@ -59,11 +67,12 @@
     "map.width": 200,
     "openFiles": [
         "MapSet.tsj",
-        "Map1.tmj"
+        "LevelMap/Level1-1.tmj"
     ],
     "project": "MarioMap.tiled-project",
     "recentFiles": [
         "MapSet.tsj",
+        "LevelMap/Level1-1.tmj",
         "Map1.tmj",
         "MapSet.tsx",
         "Map1.tmx",

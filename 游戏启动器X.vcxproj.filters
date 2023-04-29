@@ -31,12 +31,15 @@
     <Filter Include="源文件\Tool">
       <UniqueIdentifier>{8de224fa-c379-49f7-bd69-01ea2f7799bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\System">
+      <UniqueIdentifier>{e1c03876-1e71-4c81-8678-9587d84c716e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\System">
+      <UniqueIdentifier>{3945dfef-9d49-4a6b-b2ae-903dec9cb544}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SystemManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FiveChess.cpp">
@@ -57,20 +60,17 @@
     <ClCompile Include="cJSON.c">
       <Filter>源文件\Tool</Filter>
     </ClCompile>
-    <ClCompile Include="User.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Identity.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemManager.cpp">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
+      <Filter>源文件\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Games.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="SystemManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="FiveChess.h">
       <Filter>头文件\五子棋</Filter>
     </ClInclude>
@@ -89,14 +89,20 @@
     <ClInclude Include="cJSON.h">
       <Filter>头文件\Tool</Filter>
     </ClInclude>
-    <ClInclude Include="User.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Identity.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="Games.h">
+      <Filter>头文件\System</Filter>
     </ClInclude>
     <ClInclude Include="GlobalFile.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Identity.h">
+      <Filter>头文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemManager.h">
+      <Filter>头文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <Filter>头文件\System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
