@@ -3,6 +3,7 @@
 #include"SystemManager.h"
 #include"Games.h"
 #include"FiveChess.h"
+#include"SuperMario.h"
 using namespace std;
 
 #define WIN_WIDTH  960//菜单窗口大小
@@ -37,7 +38,7 @@ int main()
 		else if (Choice == "Mario")
 		{
 			Games* player = NULL;
-			player = new FiveChess("FengYuhan");
+			player = new SuperMario("FengYuhan");
 			player->RunGame();
 			delete player;
 		}

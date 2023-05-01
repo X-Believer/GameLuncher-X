@@ -1066,8 +1066,8 @@ string SystemManager::ShowMenu(int page)
 			putimagePNG(NULL, 760, 70, &mario_Glow);
 			if (status == 1)
 			{
-				/*EndBatchDraw();
-				return "Mario";*/
+				EndBatchDraw();
+				return "Mario";
 			}
 		}
 

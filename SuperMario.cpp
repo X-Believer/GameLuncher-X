@@ -1,4 +1,5 @@
 #include "SuperMario.h"
+
 namespace
 {
 	//对象物体
@@ -44,23 +45,34 @@ namespace
 		int height;
 		int pixelWidth;//像素宽高
 		int pixelHeight;
+		int x;//地图位移
+		int y;
 
 		struct tileset tileSet;
-		struct layer* layers;
+		struct layer* layers;//存储图层信息
 		int layerCount;
 
-		IMAGE* imageTiles;
-		IMAGE* imgLayer;
+		IMAGE* imageTiles;//存储每个图块图片
+		IMAGE* imgLayer;//存储每个图层图片
+		IMAGE imgBg;
 	};
 
 	MarioMap gameMap;//当前加载的地图变量
 
 	string NowLevel = "Graph/SuperMario/TileProject/LevelMap/Level1-1.tmj";
 	string NowTileSet = "Graph/SuperMario/TileProject/MapSet.tsj";
+	string NowTilePic = "Graph/SuperMario/TileProject/tileset.png";
 
-	IMAGE TilePic;
+	int NowDis = 0;
+
+	IMAGE TilePic; IMAGE test;
 }
 
+//构造函数
+SuperMario::SuperMario (string name)
+{
+	this->m_PlayerName = name;
+}
 
 //读取地图文件
 char* SuperMario::getFileContent(const char* fileName)
@@ -195,7 +207,7 @@ bool SuperMario::MapInit()
 void SuperMario::CreateMap()
 {
 	//图片集提取图片
-	loadimage(&TilePic, NowTileSet.c_str());
+	loadimage(&TilePic, NowTilePic.c_str());
 	SetWorkingImage(&TilePic);
 	int Row = gameMap.tileSet.row; int Col = gameMap.tileSet.col;
 	int margin = gameMap.tileSet.margin;
@@ -267,6 +279,54 @@ void SuperMario::CreateMap()
 	}
 }
 
+//创建图像
+void SuperMario::CreateImgLine(IMAGE* img, const char* name)
+{
+	IMAGE imgLine, imgLine2;
+	loadimage(&imgLine, name);
+	float k = imgLine.getheight() * 1.0 / img->getheight();
+	loadimage(&imgLine2, name, imgLine.getwidth() / k, img->getheight(), true);
+
+	int w = imgLine2.getwidth();
+	SetWorkingImage(img);
+	for (int x = 0; x < img->getwidth(); x += w)
+	{
+		putimage(x, 0, &imgLine2);
+	}
+	SetWorkingImage();
+}
+
+//更新界面
+void SuperMario::UpdateWindow()
+{
+	BeginBatchDraw();
+
+	putimage(0, 0, &gameMap.imgBg);
+	for (int i = 0; i < gameMap.layerCount; i++)
+	{
+		putimagePNG(gameMap.x, 0, &gameMap.imgLayer[i]);
+	}
+
+	EndBatchDraw();
+}
+
+//用户交互
+void SuperMario::UserDo()
+{
+	ExMessage msg;
+	if (peekmessage(&msg) && msg.message == WM_KEYDOWN)
+	{
+		char c = _getch();
+		if (c == 'd')
+		{
+			if (gameMap.x > -(gameMap.pixelWidth - gameMap.tileSet.tileWidth * 540))
+			{
+				gameMap.x -= 8;
+			}
+		}
+	}
+}
+
 //显示设置
 void SuperMario::ShowGameMenu()
 {
@@ -275,6 +335,30 @@ void SuperMario::ShowGameMenu()
 
 //运行游戏
 void SuperMario::RunGame()
+{
+	TileInit();
+	MapInit();
+	CreateMap();
+
+	if (0)
+	{
+		gameMap.imgBg.Resize(gameMap.tileSet.tileWidth * 960, gameMap.tileSet.tileWidth * 540);
+		CreateImgLine(&gameMap.imgBg,"Graph/SuperMario/attack.png");
+	}
+	gameMap.x = 0;
+	loadimage(&test, "Graph/SuperMario/attack.png");
+	while (1)
+	{
+		putimage(0,0,&test);
+		UserDo();
+		UpdateWindow();
+	}
+
+	return;
+}
+
+//析构函数
+SuperMario::~SuperMario()
 {
 
 }

@@ -19,10 +19,10 @@
         },
         "LevelMap/Level1-1.tmj": {
             "scale": 0.5,
-            "selectedLayer": 0,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1181,
-                "y": 272
+                "x": 4225,
+                "y": 274
             }
         },
         "Map.tmx": {
@@ -50,15 +50,21 @@
             }
         },
         "MapSet.tsj": {
+            "dynamicWrapping": false,
             "scaleInDock": 0.33,
             "scaleInEditor": 1
         },
         "MapSet.tsx": {
             "scaleInDock": 0.33,
             "scaleInEditor": 1
+        },
+        "MarioObject.tsj": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
-    "last.imagePath": "C:/Users/X-BELIEVER/Documents/信息奥赛/源程序/VS/游戏启动器X/Graph/SuperMario/TileProject",
+    "last.imagePath": "C:/Users/X-BELIEVER/Documents/信息奥赛/源程序/VS/游戏启动器X/Graph/SuperMario",
     "map.height": 13,
     "map.lastUsedFormat": "json",
     "map.renderOrder": null,
@@ -67,11 +73,13 @@
     "map.width": 200,
     "openFiles": [
         "MapSet.tsj",
-        "LevelMap/Level1-1.tmj"
+        "LevelMap/Level1-1.tmj",
+        "MarioObject.tsj"
     ],
     "project": "MarioMap.tiled-project",
     "recentFiles": [
         "MapSet.tsj",
+        "MarioObject.tsj",
         "LevelMap/Level1-1.tmj",
         "Map1.tmj",
         "MapSet.tsx",
@@ -84,5 +92,6 @@
     "tileset.tileSize": {
         "height": 42,
         "width": 42
-    }
+    },
+    "tileset.type": 1
 }
