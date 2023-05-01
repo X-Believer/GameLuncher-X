@@ -63,9 +63,13 @@ namespace
 	string NowTileSet = "Graph/SuperMario/TileProject/MapSet.tsj";
 	string NowTilePic = "Graph/SuperMario/TileProject/tileset.png";
 
-	int NowDis = 0;
+	int NowDis = 0; int isGaming = 0; int NowLevel = 0;
+	int Button = 0; int TVButton = 0;
 
-	IMAGE TilePic; IMAGE test;
+	IMAGE TilePic; IMAGE ChooseLevel; IMAGE ChooseLevel_glow; IMAGE Coin; IMAGE Info; IMAGE Title;
+	IMAGE MainMenu; IMAGE MainMenu_glow; IMAGE MarioMenu; IMAGE Power; IMAGE Power_glow;
+	IMAGE Screen; IMAGE Setting; IMAGE Setting_glow; IMAGE Signal; IMAGE TV;
+	IMAGE Start; IMAGE Start_glow;
 }
 
 //构造函数
@@ -311,19 +315,30 @@ void SuperMario::UpdateWindow()
 }
 
 //用户交互
-void SuperMario::UserDo()
+int SuperMario::UserDo(string page)
 {
-	ExMessage msg;
-	if (peekmessage(&msg) && msg.message == WM_KEYDOWN)
+	//游戏内交互
+	if (page == "Game")
 	{
-		char c = _getch();
-		if (c == 'd')
+		ExMessage msg;
+		if (peekmessage(&msg) && msg.message == WM_KEYDOWN)
 		{
-			if (gameMap.x > -(gameMap.pixelWidth - gameMap.tileSet.tileWidth * 540))
+			char c = _getch();
+			if (c == 'd')
 			{
-				gameMap.x -= 8;
+				if (gameMap.x > -(gameMap.pixelWidth - gameMap.tileSet.tileWidth * 540))
+				{
+					gameMap.x -= 8;
+				}
 			}
 		}
+		return 0;
+	}
+	
+	//游戏菜单交互
+	else if (page == "MarioMenu")
+	{
+
 	}
 }
 
@@ -346,11 +361,10 @@ void SuperMario::RunGame()
 		CreateImgLine(&gameMap.imgBg,"Graph/SuperMario/attack.png");
 	}
 	gameMap.x = 0;
-	loadimage(&test, "Graph/SuperMario/attack.png");
+
 	while (1)
 	{
-		putimage(0,0,&test);
-		UserDo();
+		UserDo("Game");
 		UpdateWindow();
 	}
 

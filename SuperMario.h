@@ -40,7 +40,7 @@ public:
 	void UpdateWindow();
 
 	//用户交互
-	void UserDo();
+	int UserDo(string page);
 	
 	//显示设置
 	virtual void ShowGameMenu();
