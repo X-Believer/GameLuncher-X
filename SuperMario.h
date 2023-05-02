@@ -12,6 +12,8 @@
 #include"tools.h"
 #include<Windows.h>
 #include<conio.h>
+#include"SystemManager.h"
+#include"Transparent.h"
 using namespace std;
 
 class SuperMario:public Games
@@ -42,7 +44,7 @@ public:
 	//用户交互
 	int UserDo(string page);
 	
-	//显示设置
+	//显示菜单
 	virtual void ShowGameMenu();
 
 	//运行游戏

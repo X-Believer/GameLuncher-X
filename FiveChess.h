@@ -14,9 +14,6 @@ public:
 	//构造函数
 	FiveChess(string name);
 
-	//创建棋盘
-	void putboard();
-
 	//用户交互
 	int UserDo();
 	

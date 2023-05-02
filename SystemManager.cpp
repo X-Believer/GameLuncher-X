@@ -220,10 +220,21 @@ string SystemManager::SettingMenu(string page)
 			if (status == 1)
 			{
 				MusicFlag = MusicFlag == 1 ? 0 : 1;
-				if(MusicFlag==0)
-					mciSendString("pause MainTheme", 0, 0, 0);
-				else if (MusicFlag == 1)
-					mciSendString("resume MainTheme", 0, 0, 0);
+				if (page == "MarioMenu")
+				{
+					if (MusicFlag == 0)
+						mciSendString("pause MarioTheme", 0, 0, 0);
+					else if (MusicFlag == 1)
+						mciSendString("resume MarioTheme", 0, 0, 0);
+				}
+
+				else
+				{
+					if (MusicFlag == 0)
+						mciSendString("pause MainTheme", 0, 0, 0);
+					else if (MusicFlag == 1)
+						mciSendString("resume MainTheme", 0, 0, 0);
+				}
 			}
 		}
 
@@ -233,8 +244,11 @@ string SystemManager::SettingMenu(string page)
 			putimagePNG(NULL, 398, 292, &ChooseLevel_glow);
 			if (status == 1)
 			{
-				/*EndBatchDraw();
-				return "ChooseLevel";*/
+				if (page == "MarioMenu")
+				{
+					EndBatchDraw();
+				    return "ChooseLevel";
+				}
 			}
 		}
 

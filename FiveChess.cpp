@@ -30,18 +30,6 @@ FiveChess::FiveChess(string name)
 	this->m_PlayerName = name;
 }
 
-//显示界面
-void FiveChess::putboard()
-{
-	putimagePNG(NULL, 0, 0, &bgp);
-	putimagePNG(NULL, 44, 1, &FiveChessBoard);
-	putimagePNG(NULL, 696, 127, &Retract);
-	putimagePNG(NULL, 696, 205, &ClearBoard);
-	putimagePNG(NULL, 696, 283, &AI);
-	putimagePNG(NULL, 696, 361, &GameSettings);
-	putimagePNG(NULL, 696, 439, &GoMainMenu);
-}
-
 //落子实现
 void FiveChess::drawchess(int m, int n)
 {
@@ -211,7 +199,13 @@ bool FiveChess::checkwin(int x, int y)
 //显示游戏菜单
 void FiveChess::ShowGameMenu()
 {
-
+	putimagePNG(NULL, 0, 0, &bgp);
+	putimagePNG(NULL, 44, 1, &FiveChessBoard);
+	putimagePNG(NULL, 696, 127, &Retract);
+	putimagePNG(NULL, 696, 205, &ClearBoard);
+	putimagePNG(NULL, 696, 283, &AI);
+	putimagePNG(NULL, 696, 361, &GameSettings);
+	putimagePNG(NULL, 696, 439, &GoMainMenu);
 }
 
 //运行游戏
@@ -291,7 +285,7 @@ void FiveChess::RunGame()
 		}
 
 		BeginBatchDraw();
-		putboard();
+		ShowGameMenu();
 
 		//悔棋
 		if (RBotton == 1)
