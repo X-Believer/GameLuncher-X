@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="源文件\五子棋">
-      <UniqueIdentifier>{98ea803b-ed5e-4f61-b41e-20ff3270e2c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\五子棋">
-      <UniqueIdentifier>{935db85f-56d8-4895-808a-5b6a8b9a2984}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\SuperMario">
       <UniqueIdentifier>{7bfad86f-91dd-4beb-8f77-fd3fa993d471}</UniqueIdentifier>
     </Filter>
@@ -37,16 +31,22 @@
     <Filter Include="源文件\System">
       <UniqueIdentifier>{3945dfef-9d49-4a6b-b2ae-903dec9cb544}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\FiveChess">
+      <UniqueIdentifier>{98ea803b-ed5e-4f61-b41e-20ff3270e2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\FiveChess">
+      <UniqueIdentifier>{935db85f-56d8-4895-808a-5b6a8b9a2984}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FiveChess.cpp">
-      <Filter>源文件\五子棋</Filter>
+      <Filter>源文件\FiveChess</Filter>
     </ClCompile>
     <ClCompile Include="FiveChessAi.cpp">
-      <Filter>源文件\五子棋</Filter>
+      <Filter>源文件\FiveChess</Filter>
     </ClCompile>
     <ClCompile Include="SuperMario.cpp">
       <Filter>源文件\SuperMario</Filter>
@@ -69,13 +69,16 @@
     <ClCompile Include="User.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
+    <ClCompile Include="Creature.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FiveChess.h">
-      <Filter>头文件\五子棋</Filter>
+      <Filter>头文件\FiveChess</Filter>
     </ClInclude>
     <ClInclude Include="FiveChessAi.h">
-      <Filter>头文件\五子棋</Filter>
+      <Filter>头文件\FiveChess</Filter>
     </ClInclude>
     <ClInclude Include="SuperMario.h">
       <Filter>头文件\SuperMario</Filter>
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="User.h">
       <Filter>头文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Creature.h">
+      <Filter>头文件\SuperMario</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

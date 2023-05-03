@@ -27,20 +27,28 @@ public:
 	//构造函数
 	SystemManager(string name,string pwd);
 
+	//析构函数
+	~SystemManager();
+
 	//设置菜单
 	string SettingMenu(string page);
 
-	//用户交互
-	int UserDO(string page);
-	
 	//显示主菜单
 	string ShowMenu(int page);
 
-	//账户菜单
-	string AccountMenu(string page);
+	//加载页面
+	string LoadingMenu();
 
 	//信息窗口
 	int MSGWindow(string page, const char* word);
+
+private:
+
+	//用户交互
+	int UserDO(string page);
+
+	//账户菜单
+	string AccountMenu(string page);
 
 	//显示信息(管理员窗口)
 	virtual void ShowInfo();
@@ -50,9 +58,6 @@ public:
 
 	//删除账号
 	void DeleteAccount(int pos,string filename);
-
-	//析构函数
-	~SystemManager();
 
 };
 

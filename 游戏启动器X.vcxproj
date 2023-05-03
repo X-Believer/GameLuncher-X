@@ -109,6 +109,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>1000000</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cJSON.c" />
+    <ClCompile Include="Creature.cpp" />
     <ClCompile Include="FiveChessAi.cpp" />
     <ClCompile Include="Identity.cpp" />
     <ClCompile Include="main.cpp" />
@@ -142,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cJSON.h" />
+    <ClInclude Include="Creature.h" />
     <ClInclude Include="FiveChessAi.h" />
     <ClInclude Include="Games.h" />
     <ClInclude Include="GlobalFile.h" />

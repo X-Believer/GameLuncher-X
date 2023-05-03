@@ -14,6 +14,14 @@ public:
 	//构造函数
 	FiveChess(string name);
 
+	//析构函数
+	~FiveChess();
+
+	//运行游戏
+	virtual void RunGame();
+
+private:
+
 	//用户交互
 	int UserDo();
 	
@@ -25,11 +33,5 @@ public:
 
 	//显示设置
 	virtual void ShowGameMenu();
-
-	//运行游戏
-	virtual void RunGame();
-
-	//析构函数
-	~FiveChess();
 
 };

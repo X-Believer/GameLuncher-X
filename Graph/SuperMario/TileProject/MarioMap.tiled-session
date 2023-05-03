@@ -21,8 +21,16 @@
             "scale": 0.5,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 999,
-                "y": 272
+                "x": 4943,
+                "y": 144
+            }
+        },
+        "LevelMap/Level1-2.tmj": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1057,
+                "y": 400
             }
         },
         "Map.tmx": {
@@ -74,11 +82,13 @@
     "openFiles": [
         "MapSet.tsj",
         "LevelMap/Level1-1.tmj",
-        "MarioObject.tsj"
+        "MarioObject.tsj",
+        "LevelMap/Level1-2.tmj"
     ],
     "project": "MarioMap.tiled-project",
     "recentFiles": [
         "MapSet.tsj",
+        "LevelMap/Level1-2.tmj",
         "MarioObject.tsj",
         "LevelMap/Level1-1.tmj",
         "Map1.tmj",

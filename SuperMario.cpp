@@ -57,7 +57,7 @@ namespace
 		IMAGE imgBg;
 	};
 
-	MarioMap gameMap;//当前加载的地图变量
+	MarioMap* gameMap=NULL;//当前加载的地图变量
 
 	string NowLevelFile = "Graph/SuperMario/TileProject/LevelMap/Level1-1.tmj";
 	string NowTileSet = "Graph/SuperMario/TileProject/MapSet.tsj";
@@ -67,7 +67,7 @@ namespace
 
 	int NowDis = 0; int isGaming = 0; int NowLevel = 0;
 	int Button = 0; int TVButton = 0; int isChoosing = 0;
-	int LevelX = 1; int LevelY = 1;
+	int LevelX = 1; int LevelY = 1; int GameButton = 0;
 
 	//游戏菜单图片
 	IMAGE TilePic; IMAGE ChooseLevel; IMAGE ChooseLevel_glow; IMAGE Coin; IMAGE Info; IMAGE Title;
@@ -129,12 +129,12 @@ bool SuperMario::TileInit()
 	}
 
 	cJSON* node = cJSON_GetObjectItem(tree, "tilewidth");
-	gameMap.tileSet.tileWidth = node->valueint;
-	gameMap.tileSet.tileHeight = cJSON_GetObjectItem(tree, "tileheight")->valueint;
-	gameMap.tileSet.margin = cJSON_GetObjectItem(tree, "margin")->valueint;
-	gameMap.tileSet.tileCount = cJSON_GetObjectItem(tree, "tilecount")->valueint;
-	gameMap.tileSet.row = cJSON_GetObjectItem(tree, "columns")->valueint;
-	gameMap.tileSet.col = gameMap.tileSet.tileCount / gameMap.tileSet.row;
+	gameMap->tileSet.tileWidth = node->valueint;
+	gameMap->tileSet.tileHeight = cJSON_GetObjectItem(tree, "tileheight")->valueint;
+	gameMap->tileSet.margin = cJSON_GetObjectItem(tree, "margin")->valueint;
+	gameMap->tileSet.tileCount = cJSON_GetObjectItem(tree, "tilecount")->valueint;
+	gameMap->tileSet.row = cJSON_GetObjectItem(tree, "columns")->valueint;
+	gameMap->tileSet.col = gameMap->tileSet.tileCount / gameMap->tileSet.row;
 
 	cJSON_Delete(tree);
 	free(content);
@@ -155,65 +155,65 @@ bool SuperMario::MapInit()
 
 	//cJSON_GetObjectItem获取指定节点的值
 	cJSON* node = cJSON_GetObjectItem(tree, "width");
-	gameMap.width=node->valueint;
-	gameMap.height = cJSON_GetObjectItem(tree, "height")->valueint;
+	gameMap->width=node->valueint;
+	gameMap->height = cJSON_GetObjectItem(tree, "height")->valueint;
 	cJSON* layer_node = cJSON_GetObjectItem(tree, "layers");
-	gameMap.layerCount = cJSON_GetArraySize(layer_node);
+	gameMap->layerCount = cJSON_GetArraySize(layer_node);
 
-	gameMap.layers = (layer*)malloc(sizeof(layer) * gameMap.layerCount);
+	gameMap->layers = (layer*)malloc(sizeof(layer) * gameMap->layerCount);
 
-	for (int i = 0; i < gameMap.layerCount; i++)
+	for (int i = 0; i < gameMap->layerCount; i++)
 	{
 		//获取图层数组的指定成员
 		cJSON *layer=cJSON_GetArrayItem(layer_node, i);
 
-		strcpy(gameMap.layers[i].name, cJSON_GetObjectItem(layer, "name")->valuestring);
+		strcpy(gameMap->layers[i].name, cJSON_GetObjectItem(layer, "name")->valuestring);
 		const char* type = cJSON_GetObjectItem(layer, "type")->valuestring;
 
 		//解析图块层
 		if (strcmp(type, "tilelayer") == 0)
 		{
-			gameMap.layers[i].type = 0;
+			gameMap->layers[i].type = 0;
 			//data_node存储每个图块
 			cJSON* data_node = cJSON_GetObjectItem(layer, "data");
-			gameMap.layers[i].height = cJSON_GetObjectItem(layer, "height")->valueint;
-			gameMap.layers[i].width = cJSON_GetObjectItem(layer, "width")->valueint;
+			gameMap->layers[i].height = cJSON_GetObjectItem(layer, "height")->valueint;
+			gameMap->layers[i].width = cJSON_GetObjectItem(layer, "width")->valueint;
 			int count = cJSON_GetArraySize(data_node);
 
-			gameMap.layers[i].tiles = (int*)malloc(sizeof(int) * count);
-			if (gameMap.layers[i].tiles == NULL)
+			gameMap->layers[i].tiles = (int*)malloc(sizeof(int) * count);
+			if (gameMap->layers[i].tiles == NULL)
 			{
 				cout << "No Memory!" << endl;
 				return false;
 			}
 			for (int k = 0; k < count; k++)
 			{
-				gameMap.layers[i].tiles[k] = cJSON_GetArrayItem(data_node, k)->valueint;
+				gameMap->layers[i].tiles[k] = cJSON_GetArrayItem(data_node, k)->valueint;
 			}
 		}
 
 		//解析对象层
 		else if (strcmp(type, "objectgroup") == 0)
 		{
-			gameMap.layers[i].type = 1;
+			gameMap->layers[i].type = 1;
 			//data_node存储每个图块
 			cJSON* object_node = cJSON_GetObjectItem(layer, "objects");
-			gameMap.layers[i].objectsCount = cJSON_GetArraySize(object_node);
-			gameMap.layers[i].objects = (struct object*)malloc(sizeof(struct object) * gameMap.layers[i].objectsCount);
+			gameMap->layers[i].objectsCount = cJSON_GetArraySize(object_node);
+			gameMap->layers[i].objects = (struct object*)malloc(sizeof(struct object) * gameMap->layers[i].objectsCount);
 			
-			for (int k = 0; k < gameMap.layers[i].objectsCount; k++)
+			for (int k = 0; k < gameMap->layers[i].objectsCount; k++)
 			{
 				cJSON* object = cJSON_GetArrayItem(object_node, k);
-				strcpy(gameMap.layers[i].objects[k].type, cJSON_GetObjectItem(object, "class")->valuestring);
-				strcpy(gameMap.layers[i].objects[k].name, cJSON_GetObjectItem(object, "name")->valuestring);
-				gameMap.layers[i].objects[k].x = cJSON_GetObjectItem(object, "x")->valuedouble;
-				gameMap.layers[i].objects[k].y = cJSON_GetObjectItem(object, "y")->valuedouble;
+				strcpy(gameMap->layers[i].objects[k].type, cJSON_GetObjectItem(object, "class")->valuestring);
+				strcpy(gameMap->layers[i].objects[k].name, cJSON_GetObjectItem(object, "name")->valuestring);
+				gameMap->layers[i].objects[k].x = cJSON_GetObjectItem(object, "x")->valuedouble;
+				gameMap->layers[i].objects[k].y = cJSON_GetObjectItem(object, "y")->valuedouble;
 			}
 		}
 	}
 
-	gameMap.pixelWidth = gameMap.tileSet.tileWidth * gameMap.width;
-	gameMap.pixelHeight = gameMap.tileSet.tileHeight * gameMap.height;
+	gameMap->pixelWidth = gameMap->tileSet.tileWidth * gameMap->width;
+	gameMap->pixelHeight = gameMap->tileSet.tileHeight * gameMap->height;
 
 	cJSON_Delete(tree);
 	free(content);
@@ -227,38 +227,39 @@ void SuperMario::CreateMap()
 	//图片集提取图片
 	loadimage(&TilePic, NowTilePic.c_str());
 	SetWorkingImage(&TilePic);
-	int Row = gameMap.tileSet.row; int Col = gameMap.tileSet.col;
-	int margin = gameMap.tileSet.margin;
+	int Row = gameMap->tileSet.row; int Col = gameMap->tileSet.col;
+	int margin = gameMap->tileSet.margin;
 
-	gameMap.imageTiles = new IMAGE[gameMap.tileSet.tileCount];
+	gameMap->imageTiles = new IMAGE[gameMap->tileSet.tileCount];
 	for (int i = 0; i < Row; i++)
 	{
 		for (int j = 0; j < Col; j++)
 		{
-			getimage(&gameMap.imageTiles[i * Col + j], margin + j * gameMap.tileSet.tileWidth,
-				margin + i * gameMap.tileSet.tileHeight, gameMap.tileSet.tileWidth,
-				gameMap.tileSet.tileHeight);
+			getimage(&gameMap->imageTiles[i * Col + j], margin + j * gameMap->tileSet.tileWidth,
+				margin + i * gameMap->tileSet.tileHeight, gameMap->tileSet.tileWidth,
+				gameMap->tileSet.tileHeight);
 		}
 	}
 	SetWorkingImage();
 
-	//地图提取图片
-	gameMap.imgLayer = new IMAGE[gameMap.layerCount];
-	for (int i = 0; i < gameMap.layerCount; i++)
+	gameMap->imgLayer = new IMAGE[gameMap->layerCount];
+
+	if (gameMap->imgLayer == NULL)cout << "?";
+	for (int i = 0; i < gameMap->layerCount; i++)
 	{
-		gameMap.imgLayer[i].Resize(gameMap.pixelWidth, gameMap.pixelHeight);
-		SetWorkingImage(&gameMap.imgLayer[i]);
+		gameMap->imgLayer[i].Resize(gameMap->pixelWidth, gameMap->pixelHeight);
+		SetWorkingImage(&gameMap->imgLayer[i]);
 
 		//对象层提取图片
-		if(gameMap.layers[i].type==1)
+		if(gameMap->layers[i].type==1)
 		{
-			for (int k = 0; k < gameMap.layers[i].objectsCount; k++)
+			for (int k = 0; k < gameMap->layers[i].objectsCount; k++)
 			{
-				struct object* obj = &gameMap.layers[i].objects[k];
-				int row = obj->y / gameMap.tileSet.tileHeight;
-				int col = obj->x / gameMap.tileSet.tileWidth;
-				int x = col * gameMap.tileSet.tileWidth;
-				int y = row * gameMap.tileSet.tileHeight;
+				struct object* obj = &gameMap->layers[i].objects[k];
+				int row = obj->y / gameMap->tileSet.tileHeight;
+				int col = obj->x / gameMap->tileSet.tileWidth;
+				int x = col * gameMap->tileSet.tileWidth;
+				int y = row * gameMap->tileSet.tileHeight;
 
 				IMAGE imgObj;
 				if (!strcmp(obj->type, "QuestionBrick"))
@@ -281,14 +282,14 @@ void SuperMario::CreateMap()
 		//图块层提取图片
 		else
 		{
-			for (int row = 0; row < gameMap.layers[i].height; row++)
+			for (int row = 0; row < gameMap->layers[i].height; row++)
 			{
-				for (int col = 0; col < gameMap.layers[i].width; col++)
+				for (int col = 0; col < gameMap->layers[i].width; col++)
 				{
-					int index = gameMap.layers[i].tiles[row * gameMap.layers[i].width + col];
+					int index = gameMap->layers[i].tiles[row * gameMap->layers[i].width + col];
 					if (index == 0)continue;
-					IMAGE* img = &gameMap.imageTiles[index - 1];
-					putimage(col * gameMap.tileSet.tileWidth, row * gameMap.tileSet.tileHeight, img);
+					IMAGE* img = &gameMap->imageTiles[index - 1];
+					putimage(col * gameMap->tileSet.tileWidth, row * gameMap->tileSet.tileHeight, img);
 				}
 			}
 		}
@@ -314,12 +315,6 @@ void SuperMario::CreateImgLine(IMAGE* img, const char* name)
 	SetWorkingImage();
 }
 
-//更新界面
-void SuperMario::UpdateWindow()
-{
-	
-}
-
 //用户交互
 int SuperMario::UserDo(string page)
 {
@@ -327,16 +322,57 @@ int SuperMario::UserDo(string page)
 	if (page == "Game")
 	{
 		ExMessage msg;
-		if (peekmessage(&msg) && msg.message == WM_KEYDOWN)
+
+		if (peekmessage(&msg))
 		{
-			char c = _getch();
-			if (c == 'd')
+			//键盘操作
+			if (msg.message == WM_KEYDOWN)
 			{
-				if (gameMap.x > -(gameMap.pixelWidth - gameMap.tileSet.tileWidth * 540))
+				char c = _getch();
+
+				//D键按下
+				if (c == 'd')
 				{
-					gameMap.x -= 8;
+					if (gameMap->x - 8 > -(gameMap->pixelWidth - 960))
+					{
+						gameMap->x -= 8;
+					}
+					else if (gameMap->x - 8 < -(gameMap->pixelWidth - 960))
+					{
+						gameMap->x = -(gameMap->pixelWidth - 960);
+					}
+					return 0;
+				}
+
+				//A键按下
+				if (c == 'a')
+				{
+					if (gameMap->x + 8 < 0)
+					{
+						gameMap->x += 8;
+					}
+					else if (gameMap->x + 8 > 0)
+					{
+						gameMap->x = 0;
+					}
+					return 0;
 				}
 			}
+
+			//鼠标操作
+			else if (msg.message == WM_LBUTTONDOWN)
+			{
+				if (msg.x > 900 && msg.x < 940 && msg.y>19 && msg.y < 71)
+				{
+					GameButton = -1;
+					if (SoundFlag == 1)
+					{
+						mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+					}
+					return 1;
+				}
+			}
+			
 		}
 		return 0;
 	}
@@ -520,6 +556,7 @@ void SuperMario::RunGame()
 		if (MusicFlag == 1)
 		{
 			mciSendString("open Audio/SuperMario/start.mp3 alias MarioTheme", 0, 0, 0);
+			mciSendString("seek MarioTheme to start", 0, 0, 0);
 			mciSendString("play MarioTheme repeat", 0, 0, 0);
 		}
 		ShowLevelX = "Graph/SuperMario/MarioMenu/1.png"; ShowLevelY = "Graph/SuperMario/MarioMenu/1.png";
@@ -534,6 +571,7 @@ void SuperMario::RunGame()
 
 		NowDis = 0; NowLevel = 0; NowLevelFile.clear();
 		Button = 0; TVButton = 0; isChoosing = 0;
+		LevelX = 1; LevelY = 1; GameButton = 0;
 
 		//加载图片
 		if (1)
@@ -677,6 +715,7 @@ void SuperMario::RunGame()
 
 					isGaming = 1;
 					mciSendString("pause MarioTheme", 0, 0, 0);
+					break;
 				}
 			}
 
@@ -698,29 +737,98 @@ void SuperMario::RunGame()
 	//进入游戏
 	if (isGaming == 1)
 	{
+		if (gameMap != NULL)
+		{
+			delete(gameMap);
+			gameMap = NULL;
+		}
+
+		gameMap = new(MarioMap);
+
+		if (MusicFlag == 1)
+		{
+			mciSendString("open Audio/SuperMario/main_Theme.mp3 alias MarioGameTheme", 0, 0, 0);
+			mciSendString("seek MarioGameTheme to start", 0, 0, 0);
+			mciSendString("play MarioGameTheme repeat", 0, 0, 0);
+		}
+
 		//加载图片
 		if (1)
 		{
 			loadimage(&BG, "Graph/SuperMario/BGBright.png");
-			loadimage(&Pause, "Graph/SuperMario/MarioMenu/Pause.png");
+			loadimage(&Pause, "Graph/SuperMario/Pause.png");
 		}
 
 		TileInit();
 		MapInit();
 		CreateMap();
 
-		gameMap.x = 0;
+		gameMap->x = 0;
 
 		while (1)
 		{
-			UserDo("Game");
+			int status = UserDo("Game");
 			BeginBatchDraw();
 
 			putimagePNG(NULL, 0, 0, &BG);
-			putimagePNG(NULL, 0, 0, &BG);
-			for (int i = 0; i < gameMap.layerCount; i++)
+			putimagePNG(NULL, 899, 19, &Pause);
+
+			//打印每个图层
+			for (int i = 0; i < gameMap->layerCount; i++)
 			{
-				putimagePNG(NULL, gameMap.x, 0, &gameMap.imgLayer[i]);
+				putimagePNG(NULL, gameMap->x, 0, &gameMap->imgLayer[i]);
+			}
+
+			//暂停游戏
+			if (GameButton == -1)
+			{
+				SystemManager* sm = new SystemManager("Admin", "123Cptbtptp");
+				string settingchoice = sm->SettingMenu("MarioGame");
+
+				//设置中选择返回主菜单
+				if (settingchoice == "MainMenu")
+				{
+					EndBatchDraw();
+					isGaming = 0; GameButton = 0;
+					delete sm;
+					mciSendString("pause MarioGameTheme", 0, 0, 0);
+					return;
+				}
+
+				//设置中选择退出登录
+				else if (settingchoice == "LogOut")
+				{
+					EndBatchDraw();
+					isGaming = 0; GameButton = 0;
+					delete sm;
+					mciSendString("pause MarioGameTheme", 0, 0, 0);
+					return;
+				}
+
+				//设置中选择选择关卡
+				else if (settingchoice == "ChooseLevel")
+				{
+					isChoosing = 1;
+					isGaming = 0; GameButton = 0;
+					EndBatchDraw();
+					delete sm;
+					mciSendString("pause MarioGameTheme", 0, 0, 0);
+					RunGame();
+					return;
+				}
+
+				//设置中选择返回
+				else if (settingchoice == "GoBack")
+				{
+					GameButton = 0;
+					EndBatchDraw();
+					delete sm;
+				}
+
+				else
+				{
+					delete sm;
+				}
 			}
 
 			EndBatchDraw();

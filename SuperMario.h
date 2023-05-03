@@ -23,6 +23,14 @@ public:
 	//构造函数
 	SuperMario(string name);
 
+	//析构函数
+	~SuperMario();
+
+	//运行游戏
+	virtual void RunGame();
+
+private:
+
 	//读取地图文件
 	char* getFileContent(const char* fileName);
 
@@ -38,19 +46,11 @@ public:
 	//创建图像
 	void CreateImgLine(IMAGE* img, const char* name);
 
-	//更新界面
-	void UpdateWindow();
-
 	//用户交互
 	int UserDo(string page);
 	
 	//显示菜单
 	virtual void ShowGameMenu();
 
-	//运行游戏
-	virtual void RunGame();
-
-	//析构函数
-	~SuperMario();
 };
 

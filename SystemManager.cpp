@@ -34,6 +34,10 @@ namespace
 	IMAGE Edit; IMAGE Edit_glow; IMAGE ManagerMenu; IMAGE Preference; IMAGE Preference_glow;
 	IMAGE ShowPerson;
 
+	//加载页面图片
+	IMAGE LoadingMenuBg; IMAGE LoadInfo1; IMAGE LoadInfo2; IMAGE LoadStage[8]; IMAGE LoadNum[8];
+	IMAGE LoadingMenuPic;
+
 	//主菜单控制量
 	int LBotton = 0; int RBotton = 0; 
 	Identity* Person = NULL; int NowRank = 1;//当前用户指针、当前排名
@@ -49,6 +53,9 @@ namespace
 
 	//信息窗口控制量
 	int BottonWindow = 0;
+
+	//加载页面控制量
+	int LoadWait[8] = { 500,400,200,200,150,400,200,500 };
 
 	//管理员菜单控制量
 	int BottonManager = 0; vector<User>UserInfo;//存储所有用户信息
@@ -228,6 +235,14 @@ string SystemManager::SettingMenu(string page)
 						mciSendString("resume MarioTheme", 0, 0, 0);
 				}
 
+				else if (page == "MarioGame")
+				{
+					if (MusicFlag == 0)
+						mciSendString("pause MarioGameTheme", 0, 0, 0);
+					else if (MusicFlag == 1)
+						mciSendString("resume MarioGameTheme", 0, 0, 0);
+				}
+
 				else
 				{
 					if (MusicFlag == 0)
@@ -244,7 +259,7 @@ string SystemManager::SettingMenu(string page)
 			putimagePNG(NULL, 398, 292, &ChooseLevel_glow);
 			if (status == 1)
 			{
-				if (page == "MarioMenu")
+				if (page == "MarioMenu"|| page == "MarioGame")
 				{
 					EndBatchDraw();
 				    return "ChooseLevel";
@@ -1070,6 +1085,7 @@ string SystemManager::ShowMenu(int page)
 			if (status == 1)
 			{
 				EndBatchDraw();
+				LoadingMenu();
 				return "FiveChess";
 			}
 		}
@@ -1081,6 +1097,7 @@ string SystemManager::ShowMenu(int page)
 			if (status == 1)
 			{
 				EndBatchDraw();
+				LoadingMenu();
 				return "Mario";
 			}
 		}
@@ -1160,6 +1177,38 @@ string SystemManager::ShowMenu(int page)
 		EndBatchDraw();
 	}
 }
+
+//加载页面
+string SystemManager::LoadingMenu()
+{
+	//加载图片
+	if (1)
+	{
+		loadimage(&LoadingMenuBg, "Graph/LoadMenu/LoadMenu.png"); loadimage(&LoadInfo1, "Graph/LoadMenu/Studio.png"); 
+		loadimage(&LoadInfo2, "Graph/LoadMenu/Info.png"); loadimage(&LoadingMenuPic, "Graph/LoadMenu/LoadMenuPic.png");
+		for (int i = 0; i < 8; i++)
+		{
+			string a = "Graph/LoadMenu/Stage" + to_string(i+1) + ".png";
+			string b = "Graph/LoadMenu/" + to_string(i+1) + ".png";
+			loadimage(LoadStage+i, a.c_str()); loadimage(LoadNum+i, b.c_str());
+		}
+	}
+
+	for (int i = 0; i < 8; i++)
+	{
+		BeginBatchDraw();
+		putimagePNG(NULL, 100, 0, LoadStage + i);
+		putimagePNG(NULL, 0, 0, &LoadingMenuBg);
+		putimagePNG(NULL, 322, 480, &LoadInfo1);
+		putimagePNG(NULL, 322, 509, &LoadInfo2);		
+		putimagePNG(NULL, 763, 488, LoadNum + i);
+		EndBatchDraw();
+		Sleep(LoadWait[i]);
+	}
+
+	return "OK";
+}
+
 
 //账户菜单
 string SystemManager::AccountMenu(string page)
