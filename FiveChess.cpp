@@ -19,7 +19,7 @@ namespace
 	IMAGE Retract; IMAGE SelectTheme; IMAGE GoMainMenu; IMAGE ClearBoard;
 	IMAGE Black; IMAGE White; IMAGE BlackWin; IMAGE WhiteWin; IMAGE ClearBoard_glow;
 	IMAGE Retract_glow; IMAGE SelectTheme_glow; IMAGE AI_glow; IMAGE GoMainMenu_glow;
-	IMAGE GameSettings; IMAGE GameSettings_glow;
+	IMAGE GameSettings; IMAGE GameSettings_glow; IMAGE ChessPoint;
 
 	FiveChessAi* Ai;
 }
@@ -54,7 +54,7 @@ int FiveChess::UserDo()
 	getmessage(&msg);
 
 	//落子判断
-	if (flag != 1 && msg.x > 40 && msg.x < 590 && msg.y>1 && msg.y < 530 && msg.message == WM_LBUTTONDOWN)
+	if (flag != 1 && msg.x > 40 && msg.x < 570 && msg.y>1 && msg.y < 530 && msg.message == WM_LBUTTONDOWN)
 	{
 		if (isAi == 0 || isAi == 1 && Turn == 0)
 		{
@@ -228,7 +228,7 @@ void FiveChess::RunGame()
 		loadimage(&SelectTheme, "Graph/FiveChess/SelectTheme.png"); loadimage(&SelectTheme_glow, "Graph/FiveChess/SelectTheme_glow.png");
 		loadimage(&White, "Graph/FiveChess/White.png"); loadimage(&GameSettings_glow, "Graph/FiveChess/GameSettings_glow.png");
 		loadimage(&Black, "Graph/FiveChess/Black.png"); loadimage(&GameSettings, "Graph/FiveChess/GameSettings.png");
-		loadimage(&BlackWin, "Graph/FiveChess/BlackWin.png");
+		loadimage(&BlackWin, "Graph/FiveChess/BlackWin.png"); loadimage(&ChessPoint, "Graph/FiveChess/Point.png");
 		loadimage(&WhiteWin, "Graph/FiveChess/WhiteWin.png");
 		if (isAi == 0)//玩家对战
 		{
@@ -297,12 +297,16 @@ void FiveChess::RunGame()
 				{
 					board[xNow][yNow] = 0;
 					Turn = Turn == 1 ? 0 : 1;
+					xNow = 0; yNow = 0;
+					xAi = 0; yAi = 0;
 				}
 				else if (isAi == 1 && !(xNow == xAi && yNow == yAi))
 				{
 					board[xNow][yNow] = 0;
 					board[xAi][yAi] = 0;
 					Turn = 0;
+					xNow = 0; yNow = 0;
+					xAi = 0; yAi = 0;
 				}
 			}
 		}
@@ -316,6 +320,8 @@ void FiveChess::RunGame()
 				memset(board, 0, sizeof(board));
 				flag = 0;
 				Turn = 0;
+				xNow = 0; yNow = 0;
+				xAi = 0; yAi = 0;
 			}
 		}
 
@@ -403,6 +409,20 @@ void FiveChess::RunGame()
 			{
 				if (board[i][j] == 1)putimagePNG(NULL, 70 + (i - 1) * 30, 10 + (j - 1) * 30, &Black);
 				else if (board[i][j] == 2)putimagePNG(NULL, 70 + (i - 1) * 30, 10 + (j - 1) * 30, &White);
+			}
+		}
+		
+		//打印提示点
+		if (board[xNow] != 0 && board[yNow] != 0)
+		{
+			if (isAi == 0)
+			{
+				putimagePNG(NULL, 50 + xNow * 30, yNow * 30 - 11, &ChessPoint);
+			}
+
+			if (isAi == 1)
+			{
+				putimagePNG(NULL, 50 + xAi * 30, yAi * 30 - 11, &ChessPoint);
 			}
 		}
 

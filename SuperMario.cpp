@@ -244,10 +244,10 @@ void SuperMario::CreateMap()
 
 	gameMap->imgLayer = new IMAGE[gameMap->layerCount];
 
-	if (gameMap->imgLayer == NULL)cout << "?";
 	for (int i = 0; i < gameMap->layerCount; i++)
 	{
 		gameMap->imgLayer[i].Resize(gameMap->pixelWidth, gameMap->pixelHeight);
+		
 		SetWorkingImage(&gameMap->imgLayer[i]);
 
 		//对象层提取图片
