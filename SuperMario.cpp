@@ -52,12 +52,12 @@ namespace
 		struct layer* layers;//存储图层信息
 		int layerCount;
 
-		IMAGE* imageTiles;//存储每个图块图片
-		IMAGE* imgLayer;//存储每个图层图片
+		IMAGE imageTiles[600];//存储每个图块图片
+		IMAGE imgLayer[10];//存储每个图层图片
 		IMAGE imgBg;
 	};
 
-	MarioMap* gameMap=NULL;//当前加载的地图变量
+	MarioMap* gameMap = NULL;//当前加载的地图变量
 
 	string NowLevelFile = "Graph/SuperMario/TileProject/LevelMap/Level1-1.tmj";
 	string NowTileSet = "Graph/SuperMario/TileProject/MapSet.tsj";
@@ -230,7 +230,6 @@ void SuperMario::CreateMap()
 	int Row = gameMap->tileSet.row; int Col = gameMap->tileSet.col;
 	int margin = gameMap->tileSet.margin;
 
-	gameMap->imageTiles = new IMAGE[gameMap->tileSet.tileCount];
 	for (int i = 0; i < Row; i++)
 	{
 		for (int j = 0; j < Col; j++)
@@ -242,12 +241,9 @@ void SuperMario::CreateMap()
 	}
 	SetWorkingImage();
 
-	gameMap->imgLayer = new IMAGE[gameMap->layerCount];
-
 	for (int i = 0; i < gameMap->layerCount; i++)
 	{
 		gameMap->imgLayer[i].Resize(gameMap->pixelWidth, gameMap->pixelHeight);
-		
 		SetWorkingImage(&gameMap->imgLayer[i]);
 
 		//对象层提取图片
@@ -762,6 +758,7 @@ void SuperMario::RunGame()
 		TileInit();
 		MapInit();
 		CreateMap();
+		
 
 		gameMap->x = 0;
 

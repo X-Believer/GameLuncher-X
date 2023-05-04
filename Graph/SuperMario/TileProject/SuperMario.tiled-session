@@ -1,0 +1,49 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "LevelMap/Level1-2.tmj",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "全部文件 (*)",
+    "fileStates": {
+        "LevelMap/Level1-1.tmj": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1759,
+                "y": 272
+            }
+        },
+        "LevelMap/Level1-2.tmj": {
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1195,
+                "y": 242
+            }
+        },
+        "MapSet.tsj": {
+            "scaleInDock": 0.5,
+            "scaleInEditor": 1
+        }
+    },
+    "map.height": 13,
+    "map.lastUsedFormat": "json",
+    "map.renderOrder": null,
+    "map.tileHeight": 42,
+    "map.tileWidth": 42,
+    "map.width": 200,
+    "openFiles": [
+        "LevelMap/Level1-1.tmj",
+        "MapSet.tsj",
+        "LevelMap/Level1-2.tmj"
+    ],
+    "project": "SuperMario.tiled-project",
+    "recentFiles": [
+        "LevelMap/Level1-1.tmj",
+        "MapSet.tsj",
+        "LevelMap/Level1-2.tmj"
+    ]
+}
