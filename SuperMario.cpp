@@ -710,7 +710,6 @@ void SuperMario::RunGame()
 					}
 
 					isGaming = 1;
-					mciSendString("pause MarioTheme", 0, 0, 0);
 					break;
 				}
 			}
@@ -741,12 +740,6 @@ void SuperMario::RunGame()
 
 		gameMap = new(MarioMap);
 
-		if (MusicFlag == 1)
-		{
-			mciSendString("open Audio/SuperMario/main_Theme.mp3 alias MarioGameTheme", 0, 0, 0);
-			mciSendString("seek MarioGameTheme to start", 0, 0, 0);
-			mciSendString("play MarioGameTheme repeat", 0, 0, 0);
-		}
 
 		//¼ÓÔØÍ¼Æ¬
 		if (1)
@@ -755,10 +748,21 @@ void SuperMario::RunGame()
 			loadimage(&Pause, "Graph/SuperMario/Pause.png");
 		}
 
+		SystemManager* sm = new(SystemManager);
+		sm->LoadingMenu();
+		delete sm;
+
 		TileInit();
 		MapInit();
 		CreateMap();
 		
+		mciSendString("pause MarioTheme", 0, 0, 0);
+		if (MusicFlag == 1)
+		{
+			mciSendString("open Audio/SuperMario/main_Theme.mp3 alias MarioGameTheme", 0, 0, 0);
+			mciSendString("seek MarioGameTheme to start", 0, 0, 0);
+			mciSendString("play MarioGameTheme repeat", 0, 0, 0);
+		}
 
 		gameMap->x = 0;
 
