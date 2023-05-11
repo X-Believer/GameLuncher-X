@@ -134,6 +134,32 @@ By X-Believer
 
 ------
 
+### V1.2
+
+#### 2023-05-01
+
+1.创建"SystemManager"中函数"LoadingMenu"加载界面功能
+
+2.在Photoshop上完成加载界面的绘制加载界面
+
+------
+
+#### 2023-05-03
+
+1.实现"SystemManager"中函数"LoadingMenu"加载界面功能
+
+![](LoadMenu.png)
+
+------
+
+#### 2023-05-04
+
+1.修改本日之前的所有头文件，将各函数分类，赋予public、private、protected访问权限
+
+2.优化了打印png图片函数"putimagePNG"的实现，降低时间复杂度
+
+------
+
 ## 五子棋更新日志
 
 ### V1.0
@@ -230,6 +256,18 @@ By X-Believer
 
 ------
 
+#### 2023-05-01
+
+1.添加显示最后落子位置功能
+
+2.修复了棋盘外点击仍判定落子的BUG
+
+3.完成V1.1的所有代码编写
+
+![](FiveChessV1.1.png)
+
+------
+
 ## 马里奥更新日志
 
 ### V1.0
@@ -243,3 +281,51 @@ By X-Believer
 3.实现"SuperMario"类中"getFileContent"函数读取地图文件功能
 
 4.实现"SuperMario"类中"MapInit"函数解析地图文件功能
+
+------
+
+#### 2023-05-01
+
+1.实现"SuperMario"类中"TileInit"解析地图集文件功能
+
+2.初步实现"SuperMario"类中"CreateMap"创建地图功能，存在严重BUG
+
+3.在Photoshop上绘制了马里奥菜单
+
+------
+
+#### 2023-05-02
+
+1.初步实现"SuperMario"类中"RunGame"运行游戏功能
+
+2.实现了打印马里奥菜单的效果
+
+![](SuperMarioMenu.png)
+
+------
+
+#### 2023-05-04
+
+1.初步实现"SuperMario"类中"CreateImgLine"创建图像功能
+
+2.初步实现"SuperMario"类中"UserDo"用户交互功能，实现菜单交互
+
+------
+
+#### 2023-05-05
+
+1.修复"SuperMario"类中"CreateMap"创建地图功能
+
+2.实现地图的打印输出
+
+3.完成V1.0版本中所有代码的编写
+
+![](MarioGameMap.png)
+
+------
+
+### V1.1
+
+#### 2023-05-10
+
+1.创建"Creature"类,作为马里奥中所有创生物的父类
