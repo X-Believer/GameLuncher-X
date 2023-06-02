@@ -1209,7 +1209,6 @@ string SystemManager::LoadingMenu()
 	return "OK";
 }
 
-
 //ÕË»§²Ëµ¥
 string SystemManager::AccountMenu(string page)
 {
