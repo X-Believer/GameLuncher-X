@@ -72,6 +72,9 @@
     <ClCompile Include="Creature.cpp">
       <Filter>源文件\SuperMario</Filter>
     </ClCompile>
+    <ClCompile Include="Mario.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FiveChess.h">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="Creature.h">
       <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="Mario.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
