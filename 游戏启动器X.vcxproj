@@ -136,6 +136,7 @@
     <ClCompile Include="Identity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MarioGlobal.cpp" />
     <ClCompile Include="SuperMario.cpp" />
     <ClCompile Include="SystemManager.cpp" />
     <ClCompile Include="tools.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="GlobalFile.h" />
     <ClInclude Include="Identity.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="MarioGlobal.h" />
     <ClInclude Include="SuperMario.h" />
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="tools.h" />

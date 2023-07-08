@@ -2,62 +2,9 @@
 
 namespace
 {
-	//对象物体
-	struct object
-	{
-		double x;
-		double y;
-		char* type;
-		char* name;
-	};
-
-	//每个地图图层
-	struct layer
-	{
-		char name[32];
-		int* tiles;
-		int width;
-		int height;
-		int type;
-		//type:[0]图块层；[1]对象层；[2]图像层
-		int objectsCount;
-		object* objects;
-	};
-
-	//地图集
-	struct tileset
-	{
-		int tileWidth;
-		int tileHeight;
-		int margin;
-
-		int row;
-		int col;
-		int tileCount;
-
-		string tileFile;
-	};
-
-	//地图
-	struct MarioMap
-	{
-		int width;//单位:图块(42*42)
-		int height;
-		int pixelWidth;//像素宽高
-		int pixelHeight;
-		int x;//地图位移
-		int y;
-
-		struct tileset tileSet;
-		struct layer* layers;//存储图层信息
-		int layerCount;
-
-		IMAGE imageTiles[600];//存储每个图块图片
-		IMAGE imgLayer[10];//存储每个图层图片
-		IMAGE imgBg;
-	};
-
 	MarioMap* gameMap = NULL;//当前加载的地图变量
+
+	blockInfo tempInfo{"air",false,false,0};
 
 	string NowLevelFile = "Graph/SuperMario/TileProject/LevelMap/Level1-1.tmj";
 	string NowTileSet = "Graph/SuperMario/TileProject/MapSet.tsj";
@@ -78,6 +25,9 @@ namespace
 
 	//游戏内图片
 	IMAGE BG; IMAGE Pause;
+
+	//角色和生物
+	Mario* mario;
 }
 
 //构造函数
@@ -129,8 +79,8 @@ bool SuperMario::TileInit()
 	}
 
 	cJSON* node = cJSON_GetObjectItem(tree, "tilewidth");
-	gameMap->tileSet.tileWidth = node->valueint;
-	gameMap->tileSet.tileHeight = cJSON_GetObjectItem(tree, "tileheight")->valueint;
+	gameMap->tileSet.tileWidth = node->valueint; TileWid = gameMap->tileSet.tileWidth;
+	gameMap->tileSet.tileHeight = cJSON_GetObjectItem(tree, "tileheight")->valueint; TileHei = gameMap->tileSet.tileHeight;
 	gameMap->tileSet.margin = cJSON_GetObjectItem(tree, "margin")->valueint;
 	gameMap->tileSet.tileCount = cJSON_GetObjectItem(tree, "tilecount")->valueint;
 	gameMap->tileSet.row = cJSON_GetObjectItem(tree, "columns")->valueint;
@@ -212,6 +162,7 @@ bool SuperMario::MapInit()
 		}
 	}
 
+	//指定地图像素宽高
 	gameMap->pixelWidth = gameMap->tileSet.tileWidth * gameMap->width;
 	gameMap->pixelHeight = gameMap->tileSet.tileHeight * gameMap->height;
 
@@ -224,6 +175,13 @@ bool SuperMario::MapInit()
 //创建地图
 void SuperMario::CreateMap()
 {
+	//碰撞图层容器初始化
+	CollideVec.resize(gameMap->layers[0].height);
+	for (int i = 0; i < gameMap->layers[0].height; i++)
+	{
+		CollideVec[i].resize(gameMap->layers[0].width);
+	}
+
 	//图片集提取图片
 	loadimage(&TilePic, NowTilePic.c_str());
 	SetWorkingImage(&TilePic);
@@ -260,14 +218,20 @@ void SuperMario::CreateMap()
 				IMAGE imgObj;
 				if (!strcmp(obj->type, "QuestionBrick"))
 				{
+					CollideVec[row][col].first = 1001;
+					CollideVec[row][col].second = { "QuestionBrick",true,true,101 };
 					loadimage(&imgObj, "Graph/SuperMario/unknown_brick_0.png");
 				}
 				else if (!strcmp(obj->type, "NormalBrick"))
 				{
+					CollideVec[row][col].first = 1002;
+					CollideVec[row][col].second = { "NormalBrick",true,true,102 };
 					loadimage(&imgObj, "Graph/SuperMario/brick_normal.png");
 				}
 				else if (!strcmp(obj->type, "HardBrick"))
 				{
+					CollideVec[row][col].first = 1003;
+					CollideVec[row][col].second = { "HardBrick",true,true,103 };
 					loadimage(&imgObj, "Graph/SuperMario/hard_brick.png");
 				}
 
@@ -283,7 +247,29 @@ void SuperMario::CreateMap()
 				for (int col = 0; col < gameMap->layers[i].width; col++)
 				{
 					int index = gameMap->layers[i].tiles[row * gameMap->layers[i].width + col];
-					if (index == 0)continue;
+					if (index == 0)
+					{
+						if (CollideVec[row][col].first == 0)
+						{
+							CollideVec[row][col].first = 0;
+							CollideVec[row][col].second = { "air",false,false,0 };
+							continue;
+						}						
+						else continue;
+					}
+					if (gameMap->layers[i].name == "Ground" || gameMap->layers[i].name == "Barrier")
+					{
+						CollideVec[row][col].first = 1;
+						CollideVec[row][col].second = { "block",true,true,0 };
+					}
+					else if (gameMap->layers[i].name == "Environment" || gameMap->layers[i].name == "Background")
+					{
+						if (CollideVec[row][col].first == 0)
+						{
+							CollideVec[row][col].first = 2;
+							CollideVec[row][col].second = { "bg",false,false,0 };
+						}
+					}
 					IMAGE* img = &gameMap->imageTiles[index - 1];
 					putimage(col * gameMap->tileSet.tileWidth, row * gameMap->tileSet.tileHeight, img);
 				}
@@ -319,44 +305,75 @@ int SuperMario::UserDo(string page)
 	{
 		ExMessage msg;
 
-		if (peekmessage(&msg))
+		//D键按下
+		if (KEY_DOWN('D'))
 		{
-			//键盘操作
-			if (msg.message == WM_KEYDOWN)
+			mario->direction = 1;
+			if (gameMap->x - 8 > -(gameMap->pixelWidth - 960))
 			{
-				char c = _getch();
+				mario->m_X++;
+				//gameMap->x -= 1;
+			}
+			else if (gameMap->x - 8 < -(gameMap->pixelWidth - 960))
+			{
+				gameMap->x = -(gameMap->pixelWidth - 960);
+			}
+			if (MarioStatus == 1)
+			{
+				mario->UpdateStatus(2);
+			}
+			return 0;
+		}
 
-				//D键按下
-				if (c == 'd')
-				{
-					if (gameMap->x - 8 > -(gameMap->pixelWidth - 960))
-					{
-						gameMap->x -= 8;
-					}
-					else if (gameMap->x - 8 < -(gameMap->pixelWidth - 960))
-					{
-						gameMap->x = -(gameMap->pixelWidth - 960);
-					}
-					return 0;
-				}
+		//A键按下
+		else if (KEY_DOWN('A'))
+		{
+			mario->direction = 0;
+			if (gameMap->x + 8 < 0)
+			{
+				mario->m_X--;
+				//gameMap->x += 1;
+			}
+			else if (gameMap->x + 8 > 0)
+			{
+				gameMap->x = 0;
+			}
+			if (MarioStatus == 1)
+			{
+				mario->UpdateStatus(2);
+			}
+			return 0;
+		}
 
-				//A键按下
-				if (c == 'a')
+		//P键按下
+		else if (KEY_DOWN('P'))
+		{
+			GameButton = -1;
+			if (SoundFlag == 1)
+			{
+				mciSendString("play Audio/MainMenu/Botton.mp3", 0, 0, 0);
+			}
+			return 1;
+		}
+
+		//没有按按键
+		else
+		{
+			if (MarioStatus != 3 && MarioStatus != 5)
+			{
+				if (StaTimer >= 500)
 				{
-					if (gameMap->x + 8 < 0)
-					{
-						gameMap->x += 8;
-					}
-					else if (gameMap->x + 8 > 0)
-					{
-						gameMap->x = 0;
-					}
+					mario->UpdateStatus(1);
+					StaTimer = 0;
 					return 0;
 				}
 			}
+		}
 
+		if (peekmessage(&msg))
+		{
 			//鼠标操作
-			else if (msg.message == WM_LBUTTONDOWN)
+			if (msg.message == WM_LBUTTONDOWN)
 			{
 				if (msg.x > 900 && msg.x < 940 && msg.y>19 && msg.y < 71)
 				{
@@ -367,8 +384,7 @@ int SuperMario::UserDo(string page)
 					}
 					return 1;
 				}
-			}
-			
+			}			
 		}
 		return 0;
 	}
@@ -737,9 +753,7 @@ void SuperMario::RunGame()
 			delete(gameMap);
 			gameMap = NULL;
 		}
-
 		gameMap = new(MarioMap);
-
 
 		//加载图片
 		if (1)
@@ -765,10 +779,31 @@ void SuperMario::RunGame()
 		}
 
 		gameMap->x = 0;
+		mario = new Mario;
+		MarioStatus = 1;
 
 		while (1)
 		{
 			int status = UserDo("Game");
+			LastDelay = getDelay();
+			AniTimer += LastDelay;
+			StaTimer += LastDelay;
+			IdleTimer += LastDelay;
+
+			//动画帧变化
+			if (AniTimer >= 100)
+			{
+				AniTimer = 0;
+				gameIndex++;
+				marioIndex++;
+			}
+			//待机帧变化
+			if (IdleTimer >= 800)
+			{
+				IdleTimer = 0;
+				idleIndex++;
+			}
+
 			BeginBatchDraw();
 
 			putimagePNG(NULL, 0, 0, &BG);
@@ -779,6 +814,10 @@ void SuperMario::RunGame()
 			{
 				putimagePNG(NULL, gameMap->x, 0, &gameMap->imgLayer[i]);
 			}
+
+			//打印马里奥
+			mario->Render(mario->m_X, mario->m_Y);
+
 
 			//暂停游戏
 			if (GameButton == -1)

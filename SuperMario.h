@@ -11,9 +11,13 @@
 #include<string.h>
 #include"tools.h"
 #include<Windows.h>
+#include<ctime>
 #include<conio.h>
 #include"SystemManager.h"
 #include"Transparent.h"
+#include"MarioGlobal.h"
+#include"Mario.h"
+#include"Creature.h"
 using namespace std;
 
 class SuperMario:public Games

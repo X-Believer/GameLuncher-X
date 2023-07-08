@@ -75,6 +75,9 @@
     <ClCompile Include="Mario.cpp">
       <Filter>源文件\SuperMario</Filter>
     </ClCompile>
+    <ClCompile Include="MarioGlobal.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FiveChess.h">
@@ -114,7 +117,10 @@
       <Filter>头文件\SuperMario</Filter>
     </ClInclude>
     <ClInclude Include="Mario.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioGlobal.h">
+      <Filter>头文件\SuperMario</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
