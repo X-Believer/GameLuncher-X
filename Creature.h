@@ -63,6 +63,7 @@ protected:
 
 	bool out_of_range = true; //允许超出地图范围
 	bool isShow = false;//是否显示
+	bool isOnFloor = false;
 	bool isInvincible = false;//是否无敌
 };
 

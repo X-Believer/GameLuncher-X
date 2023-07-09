@@ -17,5 +17,6 @@ int Gravity = 10;//重力
 int Friction = 15;//摩擦力
 int TileWid = 0; int TileHei = 0;//图块宽高
 int MapWid = 0; int MapHei = 0;//地图宽高
+double MapMov = 0;//地图位移
 
 int MarioStatus = 0;//马里奥状态

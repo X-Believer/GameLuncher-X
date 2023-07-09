@@ -13,7 +13,7 @@ string Choice;
 int main()
 {
 	//创建游戏窗口
-	initgraph(WIN_WIDTH, WIN_HEIGHT);
+	initgraph(WIN_WIDTH, WIN_HEIGHT,1);
 
 	//全屏显示
 	/*HWND hwnd = GetHWnd();

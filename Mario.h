@@ -24,9 +24,6 @@ public:
 	//被击杀
 	void Kill(int direction = 0);
 
-	//速度计算
-	void SpeedCal();
-
 	//析构函数
 	~Mario();
 
@@ -38,7 +35,6 @@ private:
 	bool jumpKey = false;
 	bool jumpSound = false;
 	bool flagDirection;     //摸旗方向
-	bool isOnFloor = true;//是否在地面
 	bool isSquat = false; //是否下蹲
 	bool isDash = false; //是否处于冲刺状态
 	bool changeSize = false; //是否改变状态大小

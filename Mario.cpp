@@ -22,7 +22,7 @@ Mario::Mario()
 	this->m_Wid = 50;
 	this->m_Mass = 1;
 	this->m_X = 8.0 * TileWid;
-	this->m_Y = 545 - 2.0 * 42 - this->m_Hei;
+	this->m_Y = 540 + Margin - 2.0 * 42 - this->m_Hei;
 	this->m_Fx = 0;
 	this->m_Fy = 0;
 	this->m_Vx = 0;
@@ -482,72 +482,6 @@ bool Mario::ReportCollide(int direction, Creature* target, int layer)
 			return true;
 		}
 	}
-}
-
-//速度计算
-void Mario::SpeedCal()
-{
-	if (MarioStatus == 0)return;
-	//根据最大功率计算受力
-	double realFx = this->m_Fx, realFy = this->m_Fy;
-	double Ax, Ay = realFy / this->m_Mass + Gravity;
-	if (realFx * this->m_Vx > this->max_Px)
-	{
-		realFx = this->max_Px / this->m_Vx;
-	}
-	//生物有速度时，考虑摩擦力
-	if (fabs(this->m_Vx) > 1)
-	{
-		Ax = (this->m_Vx > 0 ? realFx - Friction : realFx + Friction) / this->m_Mass;
-	}
-	else
-	{
-		if (fabs(realFx) > Friction)
-		{
-			Ax = realFx / this->m_Mass;
-		}
-		else
-		{
-			Ax = 0;
-			this->m_Vx = 0;
-		}
-	}
-	this->m_Vx += LastDelay / 1000 * Ax; this->m_Vy += LastDelay / 1000 *Ay;
-	this->m_Vx = min(this->m_Vx, this->max_Px);
-	double preX = this->m_X, preY = this->m_Y;
-	this->m_X = preX + LastDelay / 1000 * this->m_Vx;
-	//出界判断
-	if (!this->out_of_range)
-	{
-		if (this->m_X < this->m_Wid / 2)this->m_X = this->m_Wid / 2;
-		if (this->m_X > MapWid - this->m_Wid / 2)this->m_X = this->m_X > MapWid - this->m_Wid / 2;
-	}
-	//碰撞检测
-	preX = this->m_X; preY = this->m_Y;
-	pair<double, bool>res = this->DownCollide(preX, preY);
-	if (fabs(preY - this->m_Y) < EPS)this->m_Y = res.first;
-	else this->m_Y = min(this->m_Y, res.first);
-	//在地上
-	if (res.second)
-	{
-		this->m_Vy = 0; 
-		this->isOnFloor = true;
-	}
-	//在天上
-	else
-	{
-		this->isOnFloor = false;
-		preY = this->m_Y;
-		res = UpCollide(preX, preY);
-		if (fabs(preY - this->m_Y) < EPS)this->m_Y = res.first;
-		else this->m_Y = max(this->m_Y, res.first);
-	}
-	//左右碰撞
-	preX = this->m_X;
-	res = SideCollide(preX, preY);
-	if (fabs(preX - this->m_X) < EPS)this->m_X = res.first;
-	else this->m_X = this->m_Vx > 0.1 || (this->m_Fx > 0) ? min(this->m_X, res.first) : max(this->m_X, res.first);
-	if (res.second)this->m_Vx = 0;
 }
 
 //起立

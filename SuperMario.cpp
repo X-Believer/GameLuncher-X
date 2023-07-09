@@ -202,7 +202,7 @@ void SuperMario::CreateMap()
 	for (int i = 0; i < gameMap->layerCount; i++)
 	{
 		//生物层作为辅助图层不显示
-		if (gameMap->layers[i].name == "Creature")
+		if (!strcmp(gameMap->layers[i].name , "Creature"))
 		{
 			for (int row = 0; row < gameMap->layers[i].height; row++)
 			{ 
@@ -315,17 +315,17 @@ void SuperMario::CreateMap()
 						}						
 						else continue;
 					}
-					if (gameMap->layers[i].name == "Ground" || gameMap->layers[i].name == "Barrier")
+					if (!strcmp(gameMap->layers[i].name,"Ground")|| !strcmp(gameMap->layers[i].name ,"Barrier"))
 					{
 						CollideVec[row][col].first = 1;
 						CollideVec[row][col].second = { "block",true,true,0 };
 					}
-					else if (gameMap->layers[i].name == "Environment" || gameMap->layers[i].name == "Background")
+					else if (!strcmp(gameMap->layers[i].name, "Environment") ||!strcmp(gameMap->layers[i].name, "Background"))
 					{
 						if (CollideVec[row][col].first == 0)
 						{
 							CollideVec[row][col].first = 2;
-							CollideVec[row][col].second = { "bg",false,false,0 };
+							CollideVec[row][col].second = { "Background",false,false,0 };
 						}
 					}
 					IMAGE* img = &gameMap->imageTiles[index - 1];
@@ -367,14 +367,14 @@ int SuperMario::UserDo(string page)
 		if (KEY_DOWN('D'))
 		{
 			mario->direction = 1;
-			if (gameMap->x - 8 > -(gameMap->pixelWidth - 960))
+			mario->m_X += 0.4;
+			if (MapMov + 640 < gameMap->pixelWidth)
 			{
-				mario->m_X++;
-				//gameMap->x -= 1;
-			}
-			else if (gameMap->x - 8 < -(gameMap->pixelWidth - 960))
-			{
-				gameMap->x = -(gameMap->pixelWidth - 960);
+				if (mario->m_X - MapMov > 640)
+				{
+					MapMov = mario->m_X - 640;
+					gameMap->x = -int(MapMov);
+				}
 			}
 			if (MarioStatus == 1)
 			{
@@ -387,20 +387,26 @@ int SuperMario::UserDo(string page)
 		else if (KEY_DOWN('A'))
 		{
 			mario->direction = 0;
-			if (gameMap->x + 8 < 0)
+			mario->m_X -= 0.4;
+			if (MapMov > 0)
 			{
-				mario->m_X--;
-				//gameMap->x += 1;
-			}
-			else if (gameMap->x + 8 > 0)
-			{
-				gameMap->x = 0;
+				if (mario->m_X - MapMov < 320)
+				{				
+					MapMov = mario->m_X - 320;
+					gameMap->x = -int(MapMov);
+				}
 			}
 			if (MarioStatus == 1)
 			{
 				mario->UpdateStatus(2);
 			}
 			return 0;
+		}
+
+		//空格键按下
+		else if (KEY_DOWN(' '))
+		{
+			mario->m_Y -= 0.2;
 		}
 
 		//P键按下
@@ -864,7 +870,9 @@ void SuperMario::RunGame()
 
 			BeginBatchDraw();
 
+			mario->SpeedCal();
 			putimagePNG(NULL, 0, 0, &BG);
+			if(mario->isOnFloor)
 			putimagePNG(NULL, 899, 19, &Pause);
 
 			//打印每个图层
@@ -874,7 +882,7 @@ void SuperMario::RunGame()
 			}
 
 			//打印马里奥
-			mario->Render(mario->m_X, mario->m_Y);
+			mario->Render(mario->m_X-MapMov, mario->m_Y);
 
 
 			//暂停游戏
