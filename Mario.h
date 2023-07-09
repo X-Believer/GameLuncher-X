@@ -1,7 +1,7 @@
 #pragma once
 #include"Creature.h"
 
-class Mario :protected Creature
+class Mario : public Creature
 {
 	friend class SuperMario;
 public:

@@ -12,13 +12,15 @@
 #include"Transparent.h"
 using namespace std;
 
+#define EPS 1e-5//浮点数误差
+
 //图块信息
 struct blockInfo
 {
 	string name;
 	bool isCheck;//是否检测
 	bool isReject;//是否排斥
-	int fun;//方块功能(对象层功能从101开始)
+	int fun;//方块功能(对应图块集ID)
 };
 
 //碰撞图层

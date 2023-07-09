@@ -78,6 +78,33 @@
     <ClCompile Include="MarioGlobal.cpp">
       <Filter>源文件\SuperMario</Filter>
     </ClCompile>
+    <ClCompile Include="ChestNut.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenTortoise.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
+    <ClCompile Include="FlyTortoise.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
+    <ClCompile Include="Flower.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionBlock.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
+    <ClCompile Include="Corpse.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioFlag.cpp">
+      <Filter>源文件\SuperMario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FiveChess.h">
@@ -121,6 +148,33 @@
     </ClInclude>
     <ClInclude Include="MarioGlobal.h">
       <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="ChestNut.h">
+      <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenTortoise.h">
+      <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyTortoise.h">
+      <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="Flower.h">
+      <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
+      <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBlock.h">
+      <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioCoin.h">
+      <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="Corpse.h">
+      <Filter>头文件\SuperMario</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioFlag.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

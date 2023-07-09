@@ -105,8 +105,8 @@ bool SuperMario::MapInit()
 
 	//cJSON_GetObjectItem获取指定节点的值
 	cJSON* node = cJSON_GetObjectItem(tree, "width");
-	gameMap->width=node->valueint;
-	gameMap->height = cJSON_GetObjectItem(tree, "height")->valueint;
+	gameMap->width = node->valueint; MapWid = gameMap->width;
+	gameMap->height = cJSON_GetObjectItem(tree, "height")->valueint; MapHei = gameMap->height;
 	cJSON* layer_node = cJSON_GetObjectItem(tree, "layers");
 	gameMap->layerCount = cJSON_GetArraySize(layer_node);
 
@@ -201,6 +201,66 @@ void SuperMario::CreateMap()
 
 	for (int i = 0; i < gameMap->layerCount; i++)
 	{
+		//生物层作为辅助图层不显示
+		if (gameMap->layers[i].name == "Creature")
+		{
+			for (int row = 0; row < gameMap->layers[i].height; row++)
+			{ 
+				for (int col = 0; col < gameMap->layers[i].width; col++)
+				{
+					int index = gameMap->layers[i].tiles[row * gameMap->layers[i].width + col];
+					if (index != 0)
+					{
+						//位置有板栗
+						if (index == 456)
+						{
+							CreatureVec.push_back(ChestNut(row, col));
+						}
+						//位置有绿乌龟
+						else if (index == 457)
+						{
+							CreatureVec.push_back(GreenTortoise(row, col));
+						}
+						//位置有飞行乌龟
+						else if (index == 461)
+						{
+							CreatureVec.push_back(FlyTortoise(row, col));
+						}
+						//位置有花朵
+						else if (index == 463)
+						{
+							CreatureVec.push_back(Flower(row, col));
+						}
+						//位置有蘑菇
+						else if (index == 464)
+						{
+							CreatureVec.push_back(Mushroom(row, col));
+						}
+						//位置有问号砖
+						else if (index == 465)
+						{
+							CreatureVec.push_back(QuestionBlock(row, col));
+						}
+						//位置有金币
+						else if (index == 466)
+						{
+							CreatureVec.push_back(MarioCoin(row, col));
+						}
+						//位置有食人花
+						else if (index == 504)
+						{
+							CreatureVec.push_back(Corpse(row, col));
+						}
+						//位置有旗子
+						else if (index == 505)
+						{
+							CreatureVec.push_back(MarioFlag(row, col));
+						}
+					}
+				}
+			}
+			continue;
+		}
 		gameMap->imgLayer[i].Resize(gameMap->pixelWidth, gameMap->pixelHeight);
 		SetWorkingImage(&gameMap->imgLayer[i]);
 
@@ -234,7 +294,6 @@ void SuperMario::CreateMap()
 					CollideVec[row][col].second = { "HardBrick",true,true,103 };
 					loadimage(&imgObj, "Graph/SuperMario/hard_brick.png");
 				}
-
 				putimage(x, y, &imgObj);
 			}
 		}
@@ -251,7 +310,6 @@ void SuperMario::CreateMap()
 					{
 						if (CollideVec[row][col].first == 0)
 						{
-							CollideVec[row][col].first = 0;
 							CollideVec[row][col].second = { "air",false,false,0 };
 							continue;
 						}						

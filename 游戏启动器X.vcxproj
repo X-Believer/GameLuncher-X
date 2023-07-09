@@ -130,13 +130,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ChestNut.cpp" />
     <ClCompile Include="cJSON.c" />
+    <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="Corpse.cpp" />
     <ClCompile Include="Creature.cpp" />
     <ClCompile Include="FiveChessAi.cpp" />
+    <ClCompile Include="Flower.cpp" />
+    <ClCompile Include="FlyTortoise.cpp" />
+    <ClCompile Include="GreenTortoise.cpp" />
     <ClCompile Include="Identity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MarioFlag.cpp" />
     <ClCompile Include="MarioGlobal.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
+    <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="SuperMario.cpp" />
     <ClCompile Include="SystemManager.cpp" />
     <ClCompile Include="tools.cpp" />
@@ -145,14 +154,23 @@
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChestNut.h" />
     <ClInclude Include="cJSON.h" />
+    <ClInclude Include="MarioCoin.h" />
+    <ClInclude Include="Corpse.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="FiveChessAi.h" />
+    <ClInclude Include="Flower.h" />
+    <ClInclude Include="FlyTortoise.h" />
     <ClInclude Include="Games.h" />
     <ClInclude Include="GlobalFile.h" />
+    <ClInclude Include="GreenTortoise.h" />
     <ClInclude Include="Identity.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="MarioFlag.h" />
     <ClInclude Include="MarioGlobal.h" />
+    <ClInclude Include="Mushroom.h" />
+    <ClInclude Include="QuestionBlock.h" />
     <ClInclude Include="SuperMario.h" />
     <ClInclude Include="SystemManager.h" />
     <ClInclude Include="tools.h" />

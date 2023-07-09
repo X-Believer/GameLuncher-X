@@ -17,6 +17,15 @@
 #include"Transparent.h"
 #include"MarioGlobal.h"
 #include"Mario.h"
+#include"ChestNut.h"
+#include"GreenTortoise.h"
+#include"FlyTortoise.h"
+#include"Flower.h"
+#include"Mushroom.h"
+#include"QuestionBlock.h"
+#include"MarioCoin.h"
+#include"Corpse.h"
+#include"MarioFlag.h"
 #include"Creature.h"
 using namespace std;
 
