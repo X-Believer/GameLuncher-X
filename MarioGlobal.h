@@ -40,10 +40,10 @@ extern int idleIndex;//待机时间戳
 extern int marioIndex;//马里奥时间戳
 
 //计时器
-extern int AniTimer;//动画计时器
-extern int StaTimer;//状态计时器
-extern int IdleTimer;//待机计时器
-extern int LastDelay;//上一帧延迟
+extern double AniTimer;//动画计时器
+extern double StaTimer;//状态计时器
+extern double IdleTimer;//待机计时器
+extern double LastDelay;//上一帧延迟
 
 extern int Gravity;//重力
 extern int Friction;//摩擦力

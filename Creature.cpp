@@ -28,6 +28,26 @@ bool Creature::CreatureCollide(double x, double y, Creature& creature)
 //检测上方碰撞
 pair<double, bool> Creature::UpCollide(double lastx, double lasty)
 {
+	//已死亡及正在下落的生物不检测
+	if (this->CreatureLayer == 0 || this->m_Vy > 0) return(make_pair(lasty, false));
+	int x = int(lastx / TileWid), y = int((lasty + this->m_Hei) / TileHei);//x,y是对象左下角所在格子
+	y -= (int(this->m_Hei / TileHei));
+	
+	if (this->m_Y - TileHei * y < 0.1)
+	{
+		//如果在两格中间
+		if (lastx - TileWid * x + this->m_Wid > TileWid)
+		{
+			if (CollideVec[y-1][x + 1].first == 1)
+			{
+				return make_pair(TileHei * y, true);
+			}
+		}
+		if (CollideVec[y-1][x].first == 1)
+		{
+			return make_pair(TileHei * y, true);
+		}
+	}
 	return make_pair(lasty,false);
 }
 
@@ -36,21 +56,21 @@ pair<double, bool> Creature::DownCollide(double lastx, double lasty)
 {
 	//已死亡及正在跳跃的生物不检测
 	if (this->CreatureLayer == 0 || this->m_Vy < 0) return(make_pair(lasty, false));
-	int x = int(lastx / 42), y = int((lasty+this->m_Hei) / 42);//x,y是对象左下角所在格子
-	if (int(lasty + this->m_Hei) % 42 != 0)y++;
-	if (fabs(42 * y - this->m_Y - this->m_Hei) < 2)
+	int x = int(lastx / TileWid), y = int((lasty+this->m_Hei) / TileHei);//x,y是对象左下角所在格子
+	if (int(lasty + this->m_Hei) % TileHei != 0)y++;
+	if (TileHei * y - this->m_Y - this->m_Hei < 0.1)
 	{
 		//如果在两格中间
-		if (lastx - 42 * x + this->m_Wid > 42)
+		if (lastx - TileWid * x + this->m_Wid > TileWid)
 		{
 			if (CollideVec[y][x + 1].first == 1)
 			{
-				return make_pair(42 * y-this->m_Hei, true);
+				return make_pair(TileHei * y-this->m_Hei, true);
 			}
 		}
 		if (CollideVec[y][x].first == 1)
 		{
-			return make_pair(42 * y-this->m_Hei, true);
+			return make_pair(TileHei * y-this->m_Hei, true);
 		}
 	}
 	return make_pair(lasty, false);
@@ -59,6 +79,28 @@ pair<double, bool> Creature::DownCollide(double lastx, double lasty)
 //检测左右碰撞
 pair<double, bool> Creature::SideCollide(double lastx, double lasty)
 {
+	//已死亡及正在跳跃的生物不检测
+	if (this->CreatureLayer == 0) return(make_pair(lastx, false));
+	int x = int(lastx / TileWid), y = int((lasty + this->m_Hei) / TileHei);//x,y是对象左下角所在格子
+	if (int(lasty + this->m_Hei) % TileHei != 0)y++;
+	int x1 = int((lastx+this->m_Wid) / TileWid);
+	int testCnt = this->m_Hei / TileHei; if (int(this->m_Hei) % TileHei != 0)testCnt++;
+	//检测左边
+	for (int i = 0; i < testCnt; i++)
+	{
+		if (CollideVec[y - i - 1][x].first == 1)
+		{
+			return make_pair(TileWid * (x+1) + 0.1, true);
+		}
+	}
+	//检测右边
+	for (int i = 0; i < testCnt; i++)
+	{
+		if (CollideVec[y - i - 1][x1].first == 1)
+		{
+			return make_pair(TileWid * x1 - 0.1 - this->m_Wid, true);
+		}
+	}
 	return make_pair(lastx, false);
 }
 
@@ -74,7 +116,7 @@ void Creature::SpeedCal()
 	if (MarioStatus == 0)return;
 	//根据最大功率计算受力
 	double realFx = this->m_Fx, realFy = this->m_Fy;
-	double Ax, Ay = realFy / this->m_Mass + Gravity;
+	double Ax, Ay = (realFy + Gravity) / this->m_Mass;
 	if (realFx * this->m_Vx > this->max_Px)
 	{
 		realFx = this->max_Px / this->m_Vx;
@@ -96,10 +138,11 @@ void Creature::SpeedCal()
 			this->m_Vx = 0;
 		}
 	}
-	this->m_Vx += LastDelay / 1000 * Ax; this->m_Vy += LastDelay / 1000 * Ay;
+	this->m_Vx += LastDelay / 1000 * Ax; this->m_Vy += LastDelay /1000 * Ay;
 	this->m_Vx = min(this->m_Vx, this->max_Px);
 	double preX = this->m_X, preY = this->m_Y;
-	this->m_X = preX + LastDelay / 1000 * this->m_Vx;
+	//this->m_X = preX + LastDelay / 1000 * this->m_Vx;
+	this->m_Y = preY + LastDelay / 1000 * this->m_Vy;
 	//出界判断
 	if (!this->out_of_range)
 	{
@@ -125,9 +168,14 @@ void Creature::SpeedCal()
 		res = UpCollide(preX, preY);
 		if (fabs(preY - this->m_Y) < EPS)this->m_Y = res.first;
 		else this->m_Y = max(this->m_Y, res.first);
+		if (res.second)
+		{
+			this->m_Vy = 0;
+			this->m_Fy = 0;
+		}
 	}
 	//左右碰撞
-	preX = this->m_X;
+	preX = this->m_X; preY = this->m_Y;
 	res = SideCollide(preX, preY);
 	if (fabs(preX - this->m_X) < EPS)this->m_X = res.first;
 	else this->m_X = this->m_Vx > 0.1 || (this->m_Fx > 0) ? min(this->m_X, res.first) : max(this->m_X, res.first);

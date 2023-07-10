@@ -403,10 +403,17 @@ int SuperMario::UserDo(string page)
 			return 0;
 		}
 
+		//S键按下
+		else if (KEY_DOWN('S'))
+		{
+			mario->m_Y += 0.2;
+		}
+
 		//空格键按下
 		else if (KEY_DOWN(' '))
 		{
-			mario->m_Y -= 0.2;
+			mario->m_Fy = -10;
+			//mario->m_Y -= 0.2;
 		}
 
 		//P键按下
