@@ -34,8 +34,8 @@ public:
 	//更新角色
 	virtual void UpdateStatus(int type = 0, int damage = 0);
 
-	//检测碰撞
-	void CheckCollide(double lastx, double lasty);
+	//检测是否往下掉
+	virtual  bool CheckFall();
 
 	//报告碰撞(layer 1->图块层 2->对象层 3->生物层)
 	virtual bool ReportCollide(int direction, Creature* target = NULL, int layer = 1);
@@ -63,7 +63,8 @@ protected:
 
 	bool out_of_range = true; //允许超出地图范围
 	bool isShow = false;//是否显示
-	bool isOnFloor = false;
+	bool isOnFloor = false;//是否在地面
+	bool isFly = false;//是否可以飞行
 	bool isInvincible = false;//是否无敌
 };
 

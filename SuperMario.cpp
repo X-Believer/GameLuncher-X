@@ -364,7 +364,7 @@ int SuperMario::UserDo(string page)
 		ExMessage msg;
 
 		//D键按下
-		if (KEY_DOWN('D'))
+		if (KEY_DOWN('D') && !KEY_DOWN(' '))
 		{
 			mario->direction = 1;
 			mario->m_X += 0.4;
@@ -384,7 +384,7 @@ int SuperMario::UserDo(string page)
 		}
 
 		//A键按下
-		else if (KEY_DOWN('A'))
+		else if (KEY_DOWN('A') && !KEY_DOWN(' '))
 		{
 			mario->direction = 0;
 			mario->m_X -= 0.4;
@@ -406,14 +406,27 @@ int SuperMario::UserDo(string page)
 		//S键按下
 		else if (KEY_DOWN('S'))
 		{
-			mario->m_Y += 0.2;
+			//if(!mario->isOnFloor)
+			mario->m_Y -= 0.2;
 		}
 
 		//空格键按下
 		else if (KEY_DOWN(' '))
 		{
-			mario->m_Fy = -10;
-			//mario->m_Y -= 0.2;
+			mario->UpdateStatus(3);
+			if (KEY_DOWN('D'))
+			{
+				mario->direction = 1;
+				mario->m_X += 0.4;
+				if (MapMov + 640 < gameMap->pixelWidth)
+				{
+					if (mario->m_X - MapMov > 640)
+					{
+						MapMov = mario->m_X - 640;
+						gameMap->x = -int(MapMov);
+					}
+				}
+			}
 		}
 
 		//P键按下
@@ -430,7 +443,7 @@ int SuperMario::UserDo(string page)
 		//没有按按键
 		else
 		{
-			if (MarioStatus != 3 && MarioStatus != 5)
+			if (MarioStatus != 3 && MarioStatus != 5 && MarioStatus != 4)
 			{
 				if (StaTimer >= 500)
 				{
@@ -890,7 +903,6 @@ void SuperMario::RunGame()
 
 			//打印马里奥
 			mario->Render(mario->m_X-MapMov, mario->m_Y);
-
 
 			//暂停游戏
 			if (GameButton == -1)

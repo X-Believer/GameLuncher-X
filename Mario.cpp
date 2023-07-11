@@ -24,12 +24,12 @@ Mario::Mario()
 	this->m_X = 8.0 * TileWid;
 	this->m_Y = 540 + Margin - 2.0 * 42 - this->m_Hei;
 	this->m_Fx = 0;
-	this->m_Fy = 0;
+	this->m_Fy = -Gravity;//初始状态与重力平衡
 	this->m_Vx = 0;
 	this->m_Vy = 0;
 	this->max_Px = 100;
-	this->max_Py = 1000;
-	this->isInvincible = true;
+	this->max_Py = 1850;
+	this->isInvincible = false;
 
 	this->out_of_range = false;
 	this->direction = 1;
@@ -228,11 +228,11 @@ void Mario::Render(double x, double y,const char* file)
 	{
 		if (MarioMode == 0)
 		{
-			putimagePNG(NULL, x, y, &Down_Red[this->direction]);
+			putimagePNG(NULL, x, y, &Jump_Red[this->direction]);
 		}
 		else if (MarioMode == 1)
 		{
-			putimagePNG(NULL, x, y, &Down_White[this->direction]);
+			putimagePNG(NULL, x, y, &Jump_White[this->direction]);
 		}
 	}
 
@@ -298,9 +298,9 @@ void Mario::UpdateStatus(int type, int damage)
 		if (MarioStatus == 4 || MarioStatus == 5)
 		{
 			MarioStatus = 1;
-			this->m_Fy = Gravity;
+			this->m_Fy = -Gravity;
+			this->m_Vy = 0;
 		}
-
 		//之前在奔跑
 		else if (MarioStatus == 2)
 		{
@@ -308,7 +308,6 @@ void Mario::UpdateStatus(int type, int damage)
 			this->m_Fx = 0;
 			this->m_Vx = 0;
 		}
-
 		else
 		{
 			MarioStatus = 1;
@@ -318,44 +317,53 @@ void Mario::UpdateStatus(int type, int damage)
 	//跑步
 	else if (type == 2)
 	{
-		MarioStatus = 2;
-		//无敌受力更大
-		if (this->isInvincible)
+		//只有待机状态可以开始奔跑
+		if (MarioStatus == 1)
 		{
-			this->m_Fx = 15;
-		}
-		else
-		{
-			this->m_Fx = 10;
+			//无敌受力更大
+			if (this->isInvincible)
+			{
+				this->m_Fx = 15;
+			}
+			else
+			{
+				this->m_Fx = 10;
+			}
+			MarioStatus = 2;
 		}
 	}
 
 	//跳跃
 	else if (type == 3)
 	{
-		MarioStatus = 3;
-		//之前在奔跑
-		if (MarioStatus == 2)
+		if (MarioStatus != 0 && MarioStatus != 4 && MarioStatus != 5 && MarioStatus != 8 && MarioStatus != 3)
 		{
-			this->m_Fy = 20;
-			this->m_Fx = 0;
-		}
-		else
-		{
-			this->m_Fy = 20;
-		}
-
-		if (this->isInvincible)
-		{
-			this->m_Fy += 5;
+			//之前在下蹲
+			if (MarioStatus == 7)
+			{
+				this->m_Fy = -15;
+			}
+			else
+			{
+				this->m_Fy = -30;
+			}
+			if (this->isInvincible)
+			{
+				this->m_Fy -= 5;
+			}
+			MarioStatus = 3;
 		}
 	}
 
 	//降落
 	else if (type == 4)
 	{
-		MarioStatus = 4;
-		this->m_Fy = 0;
+		if (MarioStatus != 0 && MarioStatus != 4 && MarioStatus != 8)
+		{
+			this->m_Fy = -Gravity;
+			this->m_Vy = 30;//匀速下落
+			MarioStatus = 4;
+		}
 	}
 
 	//攀爬
@@ -373,36 +381,27 @@ void Mario::UpdateStatus(int type, int damage)
 	//下蹲
 	else if (type == 7)
 	{
-		MarioStatus = 7;
-		this->max_Px = 75;
-		this->max_Py = 500;
-		this->m_Vx = 5;
+		if (MarioStatus != 7 && MarioStatus != 4 && MarioStatus != 3 && MarioStatus != 0 && MarioStatus != 5)
+		{
+			this->max_Px = 50;
+			this->max_Py = 500;
+			MarioStatus = 7;
+		}
 	}
 }
 
-//检测碰撞
-void Mario::CheckCollide(double lastx, double lasty)
+//检测是否往下掉
+bool Mario::CheckFall()
 {
-	//检测上方
-	if (this->UpCollide(this->m_X, this->m_Y).second)
+	if (!this->isFly)
 	{
-		this->ReportCollide(TOP, NULL, 1);
+		if (MarioStatus == 2 || MarioStatus == 1 || MarioStatus == 7)
+		{
+			this->UpdateStatus(4);
+			return true;
+		}
 	}
-	//检测下方
-	if (this->DownCollide(this->m_X, this->m_Y).second)
-	{
-		this->ReportCollide(BOTTOM, NULL, 1);
-	}
-	//检测左右
-	if (this->SideCollide(this->m_X, this->m_Y).second)
-	{
-		this->ReportCollide(LEFT, NULL, 1);
-	}
-	//检测生物
-	if (this->CreatureCollide(this->m_X, this->m_Y,*this))
-	{
-		
-	}
+	return false;
 }
 
 //报告碰撞
@@ -412,19 +411,19 @@ bool Mario::ReportCollide(int direction, Creature* target, int layer)
 	if (layer == 1)
 	{
 		//跳跃
-		if (direction==TOP && target->CreatureLayer == 1 && MarioStatus == 3)
+		if (direction == TOP && MarioStatus == 3)
 		{
 			if (!this->jumpSound) {
 				this->jumpSound = true;
 				mciSendString("play Audio/SuperMario/small_jump.mp3", 0, 0, 0);
 			}
 			//状态改为下落
-			UpdateStatus(4);
+			this->UpdateStatus(4);
 			return true;
 		}
 
 		//下落至地面
-		else if (direction == BOTTOM && target->CreatureLayer == 1 && MarioStatus == 4)
+		else if (direction == BOTTOM && MarioStatus == 4)
 		{
 			//状态改为待机
 			UpdateStatus(1);

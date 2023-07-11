@@ -13,8 +13,8 @@ double StaTimer = 0;//状态计时器
 double IdleTimer = 0;//待机计时器
 double LastDelay = 0;//上一帧延迟
 
-int Gravity = 1;//重力
-int Friction = 1;//摩擦力
+int Gravity = 10;//重力
+int Friction = 10;//摩擦力
 int TileWid = 0; int TileHei = 0;//图块宽高
 int MapWid = 0; int MapHei = 0;//地图宽高
 double MapMov = 0;//地图位移

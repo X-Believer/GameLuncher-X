@@ -15,8 +15,8 @@ public:
 	//更新角色 0->freeze 1->idle 2->run 3->jump 4->down 5->climb 6->attack 7->squat
 	void UpdateStatus(int type = 0, int damage = 0);
 
-	//检测碰撞
-	void CheckCollide(double lastx, double lasty);
+	//检测是否往下掉
+	bool CheckFall();
 
 	//报告碰撞
 	bool ReportCollide(int direction, Creature* target = NULL, int layer=1);

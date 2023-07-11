@@ -14,8 +14,8 @@
 using namespace std;
 
 #define TOP 0//碰撞方向
-#define RIGHT 1
-#define BOTTOM 2
+#define RIGHT 2
+#define BOTTOM 1
 #define LEFT 3
 #define EPS 1e-5//浮点数误差
 #define Margin 6//地图Y坐标误差,像素Y=(540+5)-方块Y*42-对象高
@@ -51,7 +51,8 @@ extern int TileWid; extern int TileHei;//图块宽高
 extern int MapWid; extern int MapHei;//地图宽高
 extern double MapMov;
 
-extern int MarioStatus;//马里奥状态 0->freeze 1->idle 2->run 3->jump 4->down 5->climb 6->attack 7->squat
+//马里奥状态 0->freeze 1->idle 2->run 3->jump 4->down 5->climb 6->attack 7->squat 8->die
+extern int MarioStatus;
 
 //对象物体
 struct object
